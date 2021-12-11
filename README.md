@@ -1,6 +1,6 @@
 # ChipSHOUTER-PicoEMP
 
-[![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
+[![CC BY-SA 3.0][cc-by-sa-shield]][cc-by-sa]
 
 The PicoEMP is a low-cost Electromagnetic Fault Injection (EMFI) tool, designed *specifically* for self-study and hobbiest research.
 
@@ -35,7 +35,11 @@ The BOM and build details are described in the [hardware](hardware) folder. If y
 
 ### Easy-Assemble Build
 
-The Easy-Assembly build uses a mostly complete 
+The Easy-Assembly build uses a mostly complete SMD board, which you need to solder a Raspberry Pi Pico onto.
+
+### Programming the PicoEMP
+
+You'll need to program the PicoEMP with the firmware in the [firmware](firmware) directory.
 
 ### Building the EM Injection Tip (Probe / Coil)
 
@@ -47,15 +51,22 @@ See the [injection_tips](hardware/injection_tips) folder for more examples, incl
 
 *Reader Note: Please submit your own examples with a pull-request to this repo!*
 
-You can find additional examples of homemade cores in:
+You can find additional examples of homemade cores in research papers such as:
 
-* TODO PAPER1
-* TODO PAPER2
-* TODO PAPER3
+* A. Cui, R. Housley, "BADFET: Defeating Modern Secure Boot Using Second-Order Pulsed Electromagnetic Fault Injection," USENIX Workshop on Offensive Technologies (WOOT 17), 2017.  [Paper Link.](https://www.usenix.org/conference/woot17/workshop-program/presentation/cui) [Slides Link.](https://github.com/RedBalloonShenanigans/BADFET)
+* J. Toulemont, G. Chancel, J. M. Galliere, F. Mailly, P. Nouet and P. Maurine, "On the scaling of EMFI probes," 2021 Workshop on Fault Detection and Tolerance in Cryptography (FDTC), 2021. [Paper Link.](https://ieeexplore.ieee.org/abstract/document/9565575) [Slides Link.](https://jaif.io/2021/media/JAIF2021%20-%20Toulemont.pdf)
+* LimitedResults. "Enter the Gecko," 2021. [Blog Link](https://limitedresults.com/2021/06/enter-the-efm32-gecko/)
 
 ## Using the PicoEMP
 
-TODO
+The general usage of the PicoEMP is as follows:
+
+1. Press the "ARM" button. The red "ARMING" led will come on instantly telling you it's trying to charge the high voltaeg.
+2. The red "HV" led will come on after a few seconds saying it is charged to "some voltage".
+3. Place the probe tip overtop of the target.
+4. Press the "Pulse" button.
+
+You can see more examples of this in the video (TODO).
 
 **WARNING**: The high voltage will be applied across the SMA connector. If an injection tip (coil) is present, it will absorb most of the power. If you leave the SMA connector open, you will present a high voltage pulse across this SMA and could shock yourself. Do NOT touch the output SMA tip as a general "best practice", and treat the output as if it has a high voltage present.
 
