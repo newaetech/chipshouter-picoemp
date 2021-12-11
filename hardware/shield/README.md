@@ -30,3 +30,7 @@ Because of the very low cost of the 1551BTRD Hammond enclosure ($3 and it includ
 the real one! But to ensure you don't get stuck without one due to stock issues, this 3D file is provided. Note the 3D file
 is derived from the Hammond enclosure `STP` file, meaning this is *not covered by the open source license*. Use at your
 own (legal) risk.
+
+You'll need a set of #2 screws, or just use some hot glue / epoxy to keep the shield attached. The smaller "legs" tend to
+not print to the correct size, so you can just cut them off with side cutters if they don't fit into the PCB.
+
