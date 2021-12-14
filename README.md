@@ -6,11 +6,19 @@ The PicoEMP is a low-cost Electromagnetic Fault Injection (EMFI) tool, designed 
 
 ## Background
 
-The [ChipSHOUTER](www.chipshouter.com) is a high-end Electromagnetic Fault Injection (EMFI) tool designed by Colin at [NewAE Technology](www.newae.com). While not the first
-commercially available EMFI tool, ChipSHOUTER was the first "openly available" tool with extension open documentation. The tool was *not* open-source, but it
-did contain a variety of detailed description of the design and architecture in the [User Manual](https://github.com/newaetech/ChipSHOUTER/tree/master/documentation). The ChipSHOUTER design optimization focused in rough order on (1) safe operation, (2) high performance, (3) usability, and finally (4) cost. This results in a tool that covers many use-cases, but may be overkill (and too costly) for a subset of those use-cases. In additional, acquiring the safety testing/certification is not cheap, and must be accounted for in the product sale price.
+The [ChipSHOUTER](www.chipshouter.com) is a high-end Electromagnetic Fault Injection (EMFI) tool designed by Colin
+at [NewAE Technology](www.newae.com). While not the first commercially available EMFI tool, ChipSHOUTER was the first
+"easily purchasable" (even if expensive) tool with extensive open documentation. The tool was *not* open-source, but it
+did contain a variety of detailed description of the design and architecture in the
+[User Manual](https://github.com/newaetech/ChipSHOUTER/tree/master/documentation). The ChipSHOUTER design optimization focused in rough order on (1) safe operation, (2) high performance, (3) usability, and finally (4) cost. This results in a tool that covers many use-cases, but may be overkill (and too costly) for a subset of those use-cases. In additional, acquiring the safety testing/certification is not cheap, and must be accounted for in the product sale price.
 
-The PicoEMP tries to fill in the gap that ChipSHOUTER leaves, where cost is a critical aspect. This PicoEMP project is *not* the ChipSHOUTER. Instead it's designed to present a "bare bones" tool that has a design optimization focused in rough order of (1) safe operation, (2) cost, (3) usability, (4) performance. Despite the focus on safety and low-cost, it works *suprisingly* well. It is also *not* sold as a complete product - you are responsible for building it, ensuring it meets any relevant safety requirements/certifications, and we completely disclaim all liability for what happens next. Please **only** use PicoEMP where you are building and controlling it yourself, with total understanding of the operation and risks. It is *not* designed to be used in professional or educational environments, where tools are expected to meet safety certifications (ChipSHOUTER was designed for these use-cases).
+The PicoEMP tries to fill in the gap that ChipSHOUTER leaves at the lower end of the spectrum. This PicoEMP project is *not* the
+ChipSHOUTER. Instead it's designed to present a "bare bones" tool that has a design optimization focused in rough order of (1) safe
+operation, (2) cost, (3) usability, (4) performance. Despite the focus on safety and low-cost, it works *suprisingly* well. It is also
+*not* sold as a complete product - you are responsible for building it, ensuring it meets any relevant safety requirements/certifications,
+and we completely disclaim all liability for what happens next. Please **only** use PicoEMP where you are building and controlling it
+yourself, with total understanding of the operation and risks. It is *not* designed to be used in professional or educational environments,
+where tools are expected to meet safety certifications (ChipSHOUTER was designed for these use-cases).
 
 ## Building a PicoEMP
 
@@ -24,22 +32,27 @@ You have two options for building the PicoEMP: (1) total scratch build, or (2) e
 
 ### Scratch Build
 
-The PCB is *mostly* one layer. Original versions of it were milled on a Bantam PCB mill, and the final 'production' version is designed to still allow this simple milling process.
-You can find details in the [gerbers](hardware/gerbers) folder, including Bantam-optimized files which remove some of the smaller vias (used for the mounting holes).
+The PCB is *mostly* one layer. Original versions of it were milled on a Bantam PCB mill, and the final 'production' version is designed
+to still allow this simple milling process. You can find details in the [gerbers](hardware/gerbers) folder, including Bantam-optimized files
+which remove some of the smaller vias (used for the mounting holes), and require you to surface-mount the Raspberry Pi Pico.
 
 If you've got time you can order the "real" PCBs from the [gerbers](hardware/gerbers) as well.
 
-The BOM and build details are described in the [hardware](hardware) folder. If you cannot find the plastic shield (the upper half of Hammond 1551BTRD is used), you can find a simple 3D-printable shield as well.
+The BOM and build details are described in the [hardware](hardware) folder. If you cannot find the plastic shield (the upper half of Hammond
+1551BTRD is used), you can find a simple 3D-printable shield as well. The official shield is low-cost and available from Digikey/Mouser/
+Newark so you can purchase alongside everything else you need.
 
 **IMPORTANT**: The plastic shield is critical for safe operation. While the output itself is isolated from the input connections, you will still **easily shock yourself** on the exposed high-voltage capacitor and circuitry. **NEVER** operate the device without the shield.
 
 ### Easy-Assemble Build
 
-The Easy-Assembly build uses a mostly complete SMD board, which you need to solder a Raspberry Pi Pico onto.
+The Easy-Assembly build uses a "mostly complete" SMD board, which you need to solder a Raspberry Pi Pico onto and any through-hole headers
+you wish.
 
 ### Programming the PicoEMP
 
-You'll need to program the PicoEMP with the firmware in the [firmware](firmware) directory.
+You'll need to program the PicoEMP with the firmware in the [firmware](firmware) directory. You can run other tasks on the microcontroller
+as well.
 
 ### Building the EM Injection Tip (Probe / Coil)
 
@@ -69,6 +82,8 @@ The general usage of the PicoEMP is as follows:
 You can see more examples of this in the video (TODO).
 
 **WARNING**: The high voltage will be applied across the SMA connector. If an injection tip (coil) is present, it will absorb most of the power. If you leave the SMA connector open, you will present a high voltage pulse across this SMA and could shock yourself. Do NOT touch the output SMA tip as a general "best practice", and treat the output as if it has a high voltage present.
+
+The full ChipSHOUTER detects the missing connector tip and refuses to power up the high voltage, the PicoEMP does not have this failsafe!
 
 ## About the High Voltage Isolation
 
