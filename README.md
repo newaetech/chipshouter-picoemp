@@ -2,6 +2,8 @@
 
 [![CC BY-SA 3.0][cc-by-sa-shield]][cc-by-sa]
 
+![](hardware/picoemp.jpeg)
+
 The PicoEMP is a low-cost Electromagnetic Fault Injection (EMFI) tool, designed *specifically* for self-study and hobbiest research.
 
 ## Background
