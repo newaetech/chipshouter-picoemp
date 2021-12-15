@@ -97,11 +97,11 @@ The caveat here is for this to work you also need to isolate your gate drive. Th
 
 More details of the design are available in the [hardware](hardware) folder.
 
-### Hipot Testing 
+### Hipot Testing for Validating Isolation
 
 Easy-assemble builds have been subject to a hipot test. This test validates the isolation exists, and has not been compromised by things like leftover flux on the PCB.
 
-This test applies a high voltage (XXXV in this case) from the SMA connector to the USB ground. The test passes if less than XX mA of current flows, with the voltage held for XX seconds.
+This test applies a high voltage (1000V) from the SMA connector pads to the low-voltage signals shorted together. The test is done both with AC and DC, with test passing if LESS than 1 uA of current flows at DC, and 100uA at AC, with the test voltage held for 60 seconds for both tests. Note these limits are *far* lower than most industry standard limits (which would fail at 500 to 3000uA).
 
 ## License
 
