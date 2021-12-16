@@ -12,7 +12,7 @@ The [ChipSHOUTER](www.chipshouter.com) is a high-end Electromagnetic Fault Injec
 at [NewAE Technology](www.newae.com). While not the first commercially available EMFI tool, ChipSHOUTER was the first
 "easily purchasable" (even if expensive) tool with extensive open documentation. The tool was *not* open-source, but it
 did contain a variety of detailed description of the design and architecture in the
-[User Manual](https://github.com/newaetech/ChipSHOUTER/tree/master/documentation). The ChipSHOUTER design optimization focused in rough order on (1) safe operation, (2) high performance, (3) usability, and finally (4) cost. This results in a tool that covers many use-cases, but may be overkill (and too costly) for a subset of those use-cases. In additional, acquiring the safety testing/certification is not cheap, and must be accounted for in the product sale price.
+[User Manual](https://github.com/newaetech/ChipSHOUTER/tree/master/documentation). The ChipSHOUTER design optimization focused in rough order on (1) safe operation, (2) high performance, (3) usability, and finally (4) cost. This results in a tool that covers many use-cases, but may be overkill (and too costly) for many. In additional, acquiring the safety testing/certification is not cheap, and must be accounted for in the product sale price.
 
 The PicoEMP tries to fill in the gap that ChipSHOUTER leaves at the lower end of the spectrum. This PicoEMP project is *not* the
 ChipSHOUTER. Instead it's designed to present a "bare bones" tool that has a design optimization focused in rough order of (1) safe
@@ -102,6 +102,20 @@ More details of the design are available in the [hardware](hardware) folder.
 Easy-assemble builds have been subject to a hipot test. This test validates the isolation exists, and has not been compromised by things like leftover flux on the PCB.
 
 This test applies a high voltage (1000V) from the SMA connector pads to the low-voltage signals shorted together. The test is done both with AC and DC, with test passing if LESS than 1 uA of current flows at DC, and 100uA at AC, with the test voltage held for 60 seconds for both tests. Note these limits are *far* lower than most industry standard limits (which would fail at 500 to 3000uA).
+
+### Technical Differences between ChipSHOUTER and PicoEMP
+
+The main differences from a technical standpoint:
+
+* ChipSHOUTER uses a much more powerful high voltage circuit and transformer (up to ~30W vs ~0.2W) that gives it
+  almost unlimited glitch delivery, typically limited by your probe tip. The PicoEMP is slower to recover, typically ~1 to 4 seconds between
+  glitches.
+
+* ChipSHOUTER has a larger internal energy storage & more powerful output drivers.
+
+* ChipSHOUTER has a controlled high-voltage setting from 150V to 500V. PicoEMP generates ~250V, there is some feedback but it's uncalibrated.
+  **NOTE**: The PicoEMP allows some control of output pulse size by instead controlling the drive signal. This is less reliable (more variability
+  in the output), but meets the goal of using the lowest-cost control method.
 
 ## License
 
