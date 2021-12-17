@@ -36,7 +36,8 @@ You have two options for building the PicoEMP: (1) total scratch build, or (2) e
 
 The PCB is *mostly* one layer. Original versions of it were milled on a Bantam PCB mill, and the final 'production' version is designed
 to still allow this simple milling process. You can find details in the [gerbers](hardware/gerbers) folder, including Bantam-optimized files
-which remove some of the smaller vias (used for the mounting holes), and require you to surface-mount the Raspberry Pi Pico.
+which remove some of the smaller vias (used for the mounting holes), and require you to surface-mount the Raspberry Pi Pico. Here was
+'rev3' of the PCB with a few hacked up tests:
 
 ![](hardware/design_notes/img/proto_rev3_hackedup.jpeg)
 
