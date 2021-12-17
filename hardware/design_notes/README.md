@@ -94,3 +94,12 @@ This was the "final" selection of parts. MM3Z18VB as Zener/TVS to limit gate vol
 the gate drive in the required speed, so less (no?) chance of gate blowing up.
 
 ## Stress Testing
+
+The prototype board was set in a thermal chamber @ 100C for 6 hours, while
+continously inserting glitches. It still seemed to work OK after.
+
+![](img/burninator.jpg)
+
+A "hi-pot tester" was also used to validate the isolation is reasonable. The
+actual isolation is tested at 1kV (well beyond the voltages the device can
+generate), and this stress test is applied on any partially assembled units.
