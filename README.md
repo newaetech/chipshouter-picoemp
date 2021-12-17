@@ -38,6 +38,8 @@ The PCB is *mostly* one layer. Original versions of it were milled on a Bantam P
 to still allow this simple milling process. You can find details in the [gerbers](hardware/gerbers) folder, including Bantam-optimized files
 which remove some of the smaller vias (used for the mounting holes), and require you to surface-mount the Raspberry Pi Pico.
 
+![](hardware/design_notes/img/proto_rev3_hackedup.jpeg)
+
 If you've got time you can order the "real" PCBs from the [gerbers](hardware/gerbers) as well.
 
 The BOM and build details are described in the [hardware](hardware) folder. If you cannot find the plastic shield (the upper half of Hammond
