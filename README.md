@@ -51,8 +51,7 @@ Newark so you can purchase alongside everything else you need.
 
 ### Easy-Assemble Build
 
-The Easy-Assembly build uses a "mostly complete" SMD board, which you need to solder a Raspberry Pi Pico onto and any through-hole headers
-you wish.
+The Easy-Assembly build uses a "mostly complete" SMD board, which you need to solder a Raspberry Pi Pico, switches, and through-hole headers.
 
 ### Programming the PicoEMP
 
@@ -79,7 +78,7 @@ You can find additional examples of homemade cores in research papers such as:
 
 The general usage of the PicoEMP is as follows:
 
-1. Press the "ARM" button. The red "ARMING" led will come on instantly telling you it's trying to charge the high voltaeg.
+1. Press the "ARM" button. The red "ARMING" led will come on instantly telling you it's trying to charge the high voltage.
 2. The red "HV" led will come on after a few seconds saying it is charged to "some voltage".
 3. Place the probe tip overtop of the target.
 4. Press the "Pulse" button.
