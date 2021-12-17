@@ -8,8 +8,8 @@ The PicoEMP is a low-cost Electromagnetic Fault Injection (EMFI) tool, designed 
 
 ## Background
 
-The [ChipSHOUTER](www.chipshouter.com) is a high-end Electromagnetic Fault Injection (EMFI) tool designed by Colin
-at [NewAE Technology](www.newae.com). While not the first commercially available EMFI tool, ChipSHOUTER was the first
+The [ChipSHOUTER](http://www.chipshouter.com) is a high-end Electromagnetic Fault Injection (EMFI) tool designed by Colin
+at [NewAE Technology](http://www.newae.com). While not the first commercially available EMFI tool, ChipSHOUTER was the first
 "easily purchasable" (even if expensive) tool with extensive open documentation. The tool was *not* open-source, but it
 did contain a variety of detailed description of the design and architecture in the
 [User Manual](https://github.com/newaetech/ChipSHOUTER/tree/master/documentation). The ChipSHOUTER design optimization focused in rough order on (1) safe operation, (2) high performance, (3) usability, and finally (4) cost. This results in a tool that covers many use-cases, but may be overkill (and too costly) for many. In additional, acquiring the safety testing/certification is not cheap, and must be accounted for in the product sale price.
