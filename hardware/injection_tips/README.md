@@ -51,8 +51,9 @@ Interestingly note that despite the excessive length of the ferrite, it *still* 
 The strength is lower than with a more sane coil setup, but it shows that the ferrite couples
 the energy well.
 
-A simple torrid core can be cut in half easily, the following photo shows a roughly cut (with 
-side cutters) core. This shows that even without a grinder you can still have fun!
+A simple toroid core can be cut in half easily, the following photo shows a roughly cut (with 
+side cutters) core. This shows that even without a wet grinder you can still have fun! The
+wire used is AWG30 magnet wire.
 
 ![](examples/tip-largertorrid-broken.jpeg)
 
