@@ -79,12 +79,13 @@ breakdown occurs. In circuit they will be exposed to 4V max ever. Almost any dio
   at least 500V rating. Probably will need to change value if you change Q1 (or due to variation of Q1).
 * R2 is 300K-ohm, 2510 size. Any value in 120K to 470K is fine. Rated part is 3W which is way overkill, anything 1/4W
   or higher is fine. Dissipation only occurs when you press discharge button.
-* J1 is Edge mount SMA. You can sub another connector here or anything else you want.
+* J1 is Edge mount SMA. You can sub another connector here or anything else you want (such as screw terminals).
 
 ### BOM PART 3: Very Generic Parts
 
 The following parts are not very specific to the design, and you may be better off selecting parts available
-at the time. For some of our builds we used existing stock we had so the PNs we used aren't even available.
+at the time. For some of our builds we used existing stock we had that fit the requirements, so there is no
+"validated/preferred" part number (unlike Part 1 & Part 2).
 
 ```
 2,KSC741J LFS,SW1 SW2
@@ -101,11 +102,14 @@ at the time. For some of our builds we used existing stock we had so the PNs we 
 
 NOTES:
 * SW1 SW2: You can use the same PN as SW3 (the footprint is the same). The suggested switches are kinda
-  squishy which I like more though.
+  squishy which I like the feel of more. If you are mounting R-Pi Pico with pins you probably want higher
+  switches (like SW3).
 * Resistors were 1% in test builds due to our stock, but values not critical. 5% tol is fine.
-* C1/C2 were 50V in test builds (shared with BasicBBI). Do not need such high rating, suggest 25V or higher.
+* C1/C2 were 50V in test builds (50V rating shared with parts from BasicBBI). PicoEMP does not need
+  such high rating, but still suggest 25V or higher to avoid biasing voltage reducing effective capacitance.
 * C5 was a 50V cap in test builds, but anything > 16V should be fine.
-* LEDs: These get built with whatever in practice, these are just some part numbers we used.
+* LEDs: These are just some part numbers we used for one build, but in practice any 0603 red/green LED
+  should work.
 
 ### BOM PART 4: Other Useful Parts
 
@@ -120,7 +124,14 @@ PRT-09925 is a Sparkfun AA battery holder with power switch, terminated in 2.5mm
 This goes right to the R-Pi Pico power input, see the R-Pi Pico documentation for allowed input voltage
 ranges.
 
-You may also want some SMA connectors & ferrites.
+You will also want some SMA connectors & ferrites to actually use your tool! So pick up for example
+at least the following for a minimal-fuss option:
+```
+1,CONSMA013.062
+1,PCV-0-472-03L
+```
+
+The SMA connector is to mate with the SMA on the output. You might want to pickup several of them.
 
 ### Minimum Build
 
@@ -136,6 +147,9 @@ If you run into supply chain issues, the *absolute minimum parts* needed are:
 * R3--R7, R9--R13 (various 0603 & 0805 resistors)
 * D1, D3--D5 (generic schottky diodes) - they can be replaced with jumpers.
 * D7 is *highly recommended* but technically optional, you may immediatly blow up Q2 without it.
+
+This minimum build dumps some features (such as 'charge OK' feedback) and may require more
+tuning.
 
 ## PCBs
 
@@ -183,7 +197,8 @@ of assembled boards for a better reference.
 
 The safety shield should "just fit" if the PCB was made correctly with the milled out slots. Use
 #2 screws to fit the safety shield - you can cut the ones provided with the Hammond Enclosure in
-half with a large pair of side cutters.
+half with a large pair of side cutters. If your shield doesn't fit, you can use the "other side"
+of the Hammond Enclosure (which doesn't have the protrusions) and simply hot glue it to the PCB.
 
 A piece of heat shrink will fit over the connector J1 to ensure only one "pin" is exposed. The
 pyramid-like flare on J1 is designed to help the heatshrink fit snugly onto J1.
