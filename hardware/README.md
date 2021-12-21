@@ -35,6 +35,10 @@ the circuit as-is.
 * If you can't find `1551BTRD` a 3D printed solution is available, but it will be about
 50% less cool-looking.
 
+If you somehow can't get the RPi Pico all is not lost - the pin headers on the board can be driven
+with the required signals. If you have another RP2040 board this should be easy, but you could even
+drive the signals from an Arduino or similar.
+
 ### Slightly Generic Parts
 
 The following parts are a little generic, but you try to get the suggested ones if in stock:
@@ -57,22 +61,22 @@ KNOWN SUBS:
 * J1: 142-0701-801
 
 NOTES:
-* Q2 is IGBQ, 500V+ rating. Watch sub here as gate charge may be different which will affect drive
-  waveform. In theory you can use a MOSFET instead too.
+* Q2 is IGBT, 500V+ rating in TO-252 ('DPAK'). Watch a sub here as gate charge may be different which will affect drive
+  waveform. In theory you can use a MOSFET instead too (pinout "should" be compatable).
 * Q3/Q4 are logic level N-Channel MOSFETs, I use higher voltage rating ones due to potential for inductive kick.
-  Watch the turn-on voltage, don't just rely on "logic level". Sub a lower Vds rating FET if required.
-  *WARNING*: These MOSFETs seem to be surprisingly hard to source.
+  Watch the gate turn-on voltage, don't just rely on "logic level". Sub a lower Vds rating FET if required.
+  *WARNING*: These MOSFETs seem to be surprisingly hard to source sometimes.
 * SW3 is a 'discharge' switch and is optional, it should be 5mm high to provide clearance.
 * J3 is optional (used for calibrating charge voltage, not used normally).
 * D1 D3 D4 D5 are Schottky diodes. Suggested ones have 600V rating which is only used in case iolation
-breakdown occurs. In circuit they will be exposed to 4V max ever.
-* C3 is 630V rated, 0.47uF capacitor. Can sub anything in ~0.1uF to 1uF range with same rating & case size
+breakdown occurs. In circuit they will be exposed to 4V max ever. Almost any diode can be sub'd OK.
+* C3 is 630V rated, 0.47uF capacitor. Can sub anything in ~0.1uF to 1uF range with same voltage rating & case size
   (watch height! Must be below 5mm to fit shield).
-* R1: 20M-ohm, 2010 size. 1% to 5% is all OK, this part isn't very specific. At least 100mW rating, ideally
-  at least 500V rating.
-* R2: 300K-ohm, 2510 size. Any value in 120K to 470K is fine. Rated part is 3W which is way overkill, anything 1/4W
+* R1 is 20M-ohm, 2010 size. 1% to 5% is all OK, this part isn't very specific. At least 100mW rating, ideally
+  at least 500V rating. Probably will need to change value if you change Q1 (or due to variation of Q1).
+* R2 is 300K-ohm, 2510 size. Any value in 120K to 470K is fine. Rated part is 3W which is way overkill, anything 1/4W
   or higher is fine. Dissipation only occurs when you press discharge button.
-* J1: Edge mount SMA. You can sub another connector here or anything else you want.
+* J1 is Edge mount SMA. You can sub another connector here or anything else you want.
 
 ### Very Generic Parts
 
