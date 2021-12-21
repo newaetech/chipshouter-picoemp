@@ -4,6 +4,99 @@
 
 ## BOM
 
+Due to the horribleness that is the 2021 Supply Chain Issues, the BOM is split into several parts.
+This helps you find alternate parts that you will require because the part we used originally is
+not available anywhere.
+
+Part numbers are given in this format (which can be uploaded to e.g., Digi-Key)
+```
+QUANTITY,PART NUMBER,REF DES
+```
+
+### Specific Parts
+
+The following parts are fairly specific and very hard to sub and core to the design:
+
+```
+2,ATB322524-0110-T000,T1 T2
+1,MM3Z18VB,D7
+1,LDA111STR,Q1
+1,1551BTRD,SHIELD
+1,SC0915,U1
+```
+
+NOTES:
+* If you can't find ATB322524 basically all is lost. Some distributors just use the `ATB322524` part
+number instead of the full one given above, so try the shorter number on Octopart or similar.
+* If you can't find MM3Z18VB (D7) try another Zener in ~15V to 20V range. But this diode drastically
+affects the drive waveform, so try to avoid subing it.
+* The opto LDA111STR is very low-current, and other ones are less likely to work with
+the circuit as-is.
+* If you can't find `1551BTRD` a 3D printed solution is available, but it will be about
+50% less cool-looking.
+
+### Slightly Generic Parts
+
+The following parts are a little generic, but you try to get the suggested ones if in stock:
+
+```
+1,RGT16BM65DTL,Q2
+1,TL3301AF160QJ,SW3
+1,MURA160T3G,D2
+4,SM4005PL-TP,D1 D3 D4 D5
+1,KRM55TR72J474MH01K,C3
+1,CRMA2010AF20M0FKEF,R1
+1,3522300KFT,R3
+1,BG306-02-A-2-0400-L-G,J3
+1,0732511150,J1
+```
+
+KNOWN SUBS:
+* D2: US1J-13-F (NOT TESTED YET)
+* Q3/Q4: PMV37ENEAR
+* J1: 142-0701-801
+
+NOTES:
+* Q2 is IGBQ, 500V+ rating. Watch sub here as gate charge may be different which will affect drive
+  waveform. In theory you can use a MOSFET instead too.
+* Q3/Q4 are logic level N-Channel MOSFETs, I use higher voltage rating ones due to potential for inductive kick.
+  Watch the turn-on voltage, don't just rely on "logic level". Sub a lower Vds rating FET if required.
+  *WARNING*: These MOSFETs seem to be surprisingly hard to source.
+* SW3 is a 'discharge' switch and is optional, it should be 5mm high to provide clearance.
+* J3 is optional (used for calibrating charge voltage, not used normally).
+* D1 D3 D4 D5 are Schottky diodes. Suggested ones have 600V rating which is only used in case iolation
+breakdown occurs. In circuit they will be exposed to 4V max ever.
+* C3 is 630V rated, 0.47uF capacitor. Can sub anything in ~0.1uF to 1uF range with same rating & case size
+  (watch height! Must be below 5mm to fit shield).
+* R1: 20M-ohm, 2010 size. 1% to 5% is all OK, this part isn't very specific. At least 100mW rating, ideally
+  at least 500V rating.
+* R2: 300K-ohm, 2510 size. Any value in 120K to 470K is fine. Rated part is 3W which is way overkill, anything 1/4W
+  or higher is fine. Dissipation only occurs when you press discharge button.
+* J1: Edge mount SMA. You can sub another connector here or anything else you want.
+
+### Very Generic Parts
+
+The following parts are not very specific to the design, and you may be better off selecting parts available
+at the time. For some of our builds we used existing stock we had so the PNs we used aren't even available.
+
+```
+2,KSC741J LFS,SW1 SW2
+2,10R 0603 RESISTOR,R3 R7
+1,75R 0805 RESISTOR,R4
+5,1K 0603 RESISTOR,R5 R10 R11 R12 R13
+1,2K 0603 RESISTOR,R9
+1,22K 0603 RESISTOR,R6
+2,4.7uF 50V 0805 CERAMIC CAPACITOR,C1 C2
+1,100nF 0603 CERAMIC CAPACITOR,C5
+1,APT1608SRCPRV,D6 D9
+1,APT1608CGCK,D8
+```
+
+NOTES:
+* SW1 SW2: You can use the same PN as SW3 (the footprint is the same). The suggested switches are kinda
+  squishy which I like more though.
+* LEDs: These get built with whatever in practice, these are just some part numbers we used.
+
 ## PCBs
 
 The PCB gerbers can be found in the [gerbers](gerbers) folder. There are two versions:
