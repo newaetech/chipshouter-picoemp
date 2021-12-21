@@ -178,7 +178,7 @@ and only includes the copper layers.
 
 This file should work well using both the `0.005" PCB Engraving Bit` and `1/32 end mill` combination.
 
-See the file [bantam_jumpers.png](gerbers/rev04_img/bantam_jumpers.png) which annotates a required jumper.
+See the [gerbers/rev04_bantam/README.md](gerbers/rev04_bantam/README.md) file which annotates using this & the required jumper wire!
 
 ## Build Process
 
