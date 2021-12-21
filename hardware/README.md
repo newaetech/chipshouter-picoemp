@@ -88,13 +88,16 @@ at the time. For some of our builds we used existing stock we had so the PNs we 
 1,22K 0603 RESISTOR,R6
 2,4.7uF 50V 0805 CERAMIC CAPACITOR,C1 C2
 1,100nF 0603 CERAMIC CAPACITOR,C5
-1,APT1608SRCPRV,D6 D9
+2,APT1608SRCPRV,D6 D9
 1,APT1608CGCK,D8
 ```
 
 NOTES:
 * SW1 SW2: You can use the same PN as SW3 (the footprint is the same). The suggested switches are kinda
   squishy which I like more though.
+* Resistors were 1% in test builds due to our stock, but values not critical. 5% tol is fine.
+* C1/C2 were 50V in test builds (shared with BasicBBI). Do not need such high rating, suggest 25V or higher.
+* C5 was a 50V cap in test builds, but anything > 16V should be fine.
 * LEDs: These get built with whatever in practice, these are just some part numbers we used.
 
 ## PCBs
