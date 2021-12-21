@@ -28,14 +28,17 @@ This version includes only the most basic required functionality. To use this ve
 3. Wait for HV light to come on.
 4. Press 'pulse' switch.
 
-The default file turns off the high voltage after the capacitor is detected as "charged". This saves a bit
-of power, but means it's slower to react to the capacitor voltage falling. You can comment out this section
-of the file if you want:
+The default file turns off the high voltage after some time to save battery power. You can comment out this section if you
+don't want that:
 
 ```
-        # COMMENT OUT FOLLOWING FOR FASTER RECOVERY
-        if cyclecount > 500:
+    # Turn off HV if no activity after 60 seconds
+    if enabled:
+        if utime.ticks_diff(utime.ticks_ms(), timeout_start) > 60000:
+            enabled = False
             pwm_off()
-        else:
-            cyclecount += 1
+            ledArm.off()
 ```
+
+The default code keeps charging past the 'charged' pin going high. You can improve power consumption by toggling the charging
+on/off, but this hurts the already-slow recovery time from pulses being inserted.
