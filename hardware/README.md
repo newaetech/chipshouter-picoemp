@@ -1,10 +1,11 @@
 # PicoEMP Build Details
 
-*This page is a work in progress*
+*This page is a work in progress, hardware source files not yet uploaded*
 
 ## BOM
 
-Due to the horribleness that is the 2021 Supply Chain Issues, the BOM is split into several parts.
+Due to the horribleness that is the 2021 Supply Chain Issues, this "bom explainer" is include dand
+is split into several parts.
 This helps you find alternate parts that you will require because the part we used originally is
 not available anywhere.
 
@@ -31,7 +32,7 @@ number instead of the full one given above, so try the shorter number on Octopar
 * If you can't find MM3Z18VB (D7) try another Zener in ~15V to 20V range. But this diode drastically
 affects the drive waveform, so try to avoid subing it.
 * The opto LDA111STR is very low-current, and other ones are less likely to work with
-the circuit as-is.
+the circuit as-is. The feedback isn't "required" per-say so you can omit that circuitry.
 * If you can't find `1551BTRD` a 3D printed solution is available, but it will be about
 50% less cool-looking.
 
@@ -104,6 +105,21 @@ NOTES:
 * C5 was a 50V cap in test builds, but anything > 16V should be fine.
 * LEDs: These get built with whatever in practice, these are just some part numbers we used.
 
+### Minimum Build
+
+If you run into supply chain issues, the *absolute minimum parts* needed are:
+
+* Shield (Hammond 1551BTRD)
+* T1, T2 (Transformers)
+* D2 (High Voltage Rectifier)
+* Q2 (High Voltage Switch)
+* Q3, Q4 (Low voltage logic-level MOSFET)
+* C1, C2 (Caps on HV transformer)
+* C3 (Cap on gate drive transformer)
+* R3--R7, R9--R13 (various 0603 & 0805 resistors)
+* D1, D3--D5 (generic schottky diodes) - they can be replaced with jumpers.
+* D7 is *highly recommended* but technically optional, you may immediatly blow up Q2 without it.
+
 ## PCBs
 
 The PCB gerbers can be found in the [gerbers](gerbers) folder. There are two versions:
@@ -117,7 +133,11 @@ The regular gerbers have very little special about them. They should be accepted
 PCB fab (OSHPark, JLCPCB, PCBWay, AllPCB, Advanced Circuits, etc).
 
 The board can be hand-built if you have done a few SMD builds before. The smallest parts are 0603
-so there is nothing very crazy. Watch the build order on some parts.
+so there is nothing very crazy. Watch the build order on some parts to make soldering easier:
+
+* Mount J3 (if using) before the nearby SMD parts.
+* Mount SW1 & SW2 after mounting R-Pi Pico if SMD mounting the R-Pi Pico.
+* Mount Q1 after parts around it.
 
 ### Bantam Version
 
