@@ -168,7 +168,7 @@ so there is nothing very crazy. Watch the build order on some parts to make sold
 
 * Mount J3 (if using) before the nearby SMD parts.
 * Mount SW1 & SW2 after mounting R-Pi Pico if SMD mounting the R-Pi Pico.
-* Mount Q1 after parts around it.
+* Mount Q1 (6-pin optoisolator) after parts around it.
 
 ### Bantam Version
 
@@ -176,7 +176,7 @@ The 'bantam mill version' is optimized for milling on a Bantam PCB mill, but cou
 a classic PCB etch or other PCB mill. It removes most of the throuh-holes from the NC-Drill file
 and only includes the copper layers.
 
-This file should work well using the `0.005" PCB Engraving Bit` and `1/32 end mill`.
+This file should work well using both the `0.005" PCB Engraving Bit` and `1/32 end mill` combination.
 
 See the file [bantam_jumpers.png](gerbers/rev04_img/bantam_jumpers.png) which annotates a required jumper.
 
@@ -186,12 +186,15 @@ See the file [bantam_jumpers.png](gerbers/rev04_img/bantam_jumpers.png) which an
 
 A assembly drawing is available in the file [BUILD-DRAWING-REV04.PDF](BUILD-DRAWING-REV04.PDF)
 which includes the location of parts. Lines indicate the cathods of dioeds. The angled ends of
-the LEDs indicates their cathods.
+the LEDs indicates their cathods. Some specific notes:
 
-Watch transformer T1 and T2 have a dot that needs to be matched to the assembly drawing/silkscreen.
+* Watch transformer T1 and T2 have a dot that needs to be matched to the assembly drawing/silkscreen.
 
-Q1 has pin 1 marked on the silkscreen with a line above pin 1 - check this carefully. See the photo
-of assembled boards for a better reference.
+* Q1 (6-pin optoisolator) has pin 1 marked on the silkscreen with a line above pin 1 - check this carefully.
+  See the photo of assembled boards for a better reference.
+
+* Check D7 cathod carefully - if mounted backwards (or there is an open solder joint on it) you may
+  blow up Q2 (the large MOSFET). Depending on your equipment on-hand Q2 may be difficult to replace.
 
 ### Shields
 
