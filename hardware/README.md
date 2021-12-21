@@ -4,7 +4,7 @@
 
 ## BOM
 
-Due to the horribleness that is the 2021 Supply Chain Issues, this "bom explainer" is include dand
+Due to the horribleness that is the 2021 Supply Chain Issues, this "bom explainer" is included and
 is split into several parts.
 This helps you find alternate parts that you will require because the part we used originally is
 not available anywhere.
@@ -14,7 +14,9 @@ Part numbers are given in this format (which can be uploaded to e.g., Digi-Key)
 QUANTITY,PART NUMBER,REF DES
 ```
 
-### Specific Parts
+Be sure to pick up all parts in the following **4** subsections:
+
+### BOM PART 1: Specific Parts
 
 The following parts are fairly specific and very hard to sub and core to the design:
 
@@ -40,7 +42,7 @@ If you somehow can't get the RPi Pico all is not lost - the pin headers on the b
 with the required signals. If you have another RP2040 board this should be easy, but you could even
 drive the signals from an Arduino or similar.
 
-### Slightly Generic Parts
+### BOM PART 2: Slightly Generic Parts
 
 The following parts are a little generic, but you try to get the suggested ones if in stock:
 
@@ -79,7 +81,7 @@ breakdown occurs. In circuit they will be exposed to 4V max ever. Almost any dio
   or higher is fine. Dissipation only occurs when you press discharge button.
 * J1 is Edge mount SMA. You can sub another connector here or anything else you want.
 
-### Very Generic Parts
+### BOM PART 3: Very Generic Parts
 
 The following parts are not very specific to the design, and you may be better off selecting parts available
 at the time. For some of our builds we used existing stock we had so the PNs we used aren't even available.
@@ -104,6 +106,21 @@ NOTES:
 * C1/C2 were 50V in test builds (shared with BasicBBI). Do not need such high rating, suggest 25V or higher.
 * C5 was a 50V cap in test builds, but anything > 16V should be fine.
 * LEDs: These get built with whatever in practice, these are just some part numbers we used.
+
+### BOM PART 4: Other Useful Parts
+
+In practice it's handy having the battery input, which is designed to use the following:
+
+```
+1,S2B-XH-A(LF)(SN),J2
+1,PRT-09925,BATTERY HOLDER
+```
+
+PRT-09925 is a Sparkfun AA battery holder with power switch, terminated in 2.5mm (0.1") JST-XH connector.
+This goes right to the R-Pi Pico power input, see the R-Pi Pico documentation for allowed input voltage
+ranges.
+
+You may also want some SMA connectors & ferrites.
 
 ### Minimum Build
 
