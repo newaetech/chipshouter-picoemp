@@ -185,7 +185,7 @@ See the file [bantam_jumpers.png](gerbers/rev04_img/bantam_jumpers.png) which an
 ### PCBA
 
 A assembly drawing is available in the file [BUILD-DRAWING-REV04.PDF](BUILD-DRAWING-REV04.PDF)
-which includes the location of parts. Lines indicate the cathods of dioeds. The angled ends of
+which includes the location of parts. Lines indicate the cathods of diodes. The angled ends of
 the LEDs indicates their cathods. Some specific notes:
 
 * Watch transformer T1 and T2 have a dot that needs to be matched to the assembly drawing/silkscreen.
