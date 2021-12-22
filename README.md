@@ -91,7 +91,7 @@ You can see more examples of this in the video (TODO RECORD A VIDEO).
 
 You can even use the Raspberry Pi Pico to attack a Raspberry Pi "regular"! Here's a demo hitting a RSA signature on a Raspberry Pi (the demo code taken from Colin's [Remoticon 2021 Talk](https://github.com/colinoflynn/remoticon-2021-levelup-hardware-hacking/tree/master/rpi-glitching)):
 
-![](demo.jpg)
+![](hardware/demo.jpg)
 
 **WARNING**: The high voltage will be applied across the SMA connector. If an injection tip (coil) is present, it will absorb most of the power. If you leave the SMA connector open, you will present a high voltage pulse across this SMA and could shock yourself. Do NOT touch the output SMA tip as a general "best practice", and treat the output as if it has a high voltage present.
 
