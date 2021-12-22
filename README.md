@@ -53,6 +53,8 @@ Newark so you can purchase alongside everything else you need.
 
 The Easy-Assembly build uses a "mostly complete" SMD board, which you need to solder a Raspberry Pi Pico, switches, and through-hole headers.
 
+**This does not yet exist to buy! If you are interested drop a note on Issue #1**
+
 ### Programming the PicoEMP
 
 You'll need to program the PicoEMP with the firmware in the [firmware](firmware) directory. You can run other tasks on the microcontroller
@@ -60,13 +62,14 @@ as well.
 
 ### Building the EM Injection Tip (Probe / Coil)
 
-You will also need an "injection tip", typically made with a ferrite core and some wires wrapped around it. You can see examples of such cores in the ChipSHOUTER kit.
+You will also need an "injection tip", typically made with a ferrite core and some wires wrapped around it. You can see examples of such cores in the ChipSHOUTER kit. The following shows a few homemade & commercial tips:
 
-An easy way to make them is with a SMA connector TODO.
+![](hardware/injection_tips/examples/tips-sma.jpg)
 
-See the [injection_tips](hardware/injection_tips) folder for more examples, including user-submitted examples.
+You can make your own from suitable SMA connectors, magnet wire, and a ferrite core material. See the [injection_tips](hardware/injection_tips) 
+folder for more examples and details on building the probes.
 
-*Reader Note: Please submit your own examples with a pull-request to this repo!*
+*Reader Note: Please submit your own examples with a pull-request to this repo, it would be great to have more examples of probe geometries*
 
 You can find additional examples of homemade cores in research papers such as:
 
@@ -84,7 +87,11 @@ The general usage of the PicoEMP is as follows:
 3. Place the probe tip overtop of the target.
 4. Press the "Pulse" button.
 
-You can see more examples of this in the video (TODO).
+You can see more examples of this in the video (TODO RECORD A VIDEO).
+
+You can even use the Raspberry Pi Pico to attack a Raspberry Pi "regular"! Here's a demo hitting a RSA signature on a Raspberry Pi (the demo code taken from Colin's [Remoticon 2021 Talk](https://github.com/colinoflynn/remoticon-2021-levelup-hardware-hacking/tree/master/rpi-glitching)):
+
+![](demo.jpg)
 
 **WARNING**: The high voltage will be applied across the SMA connector. If an injection tip (coil) is present, it will absorb most of the power. If you leave the SMA connector open, you will present a high voltage pulse across this SMA and could shock yourself. Do NOT touch the output SMA tip as a general "best practice", and treat the output as if it has a high voltage present.
 
