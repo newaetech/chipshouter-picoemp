@@ -2,9 +2,11 @@
 
 [![CC BY-SA 3.0][cc-by-sa-shield]][cc-by-sa]
 
-![](hardware/picoemp.jpeg)
+![](hardware/picoemp-red.jpeg)
 
-The PicoEMP is a low-cost Electromagnetic Fault Injection (EMFI) tool, designed *specifically* for self-study and hobbiest research.
+The PicoEMP is a low-cost Electromagnetic Fault Injection (EMFI) tool, designed *specifically* for self-study and hobbiest research. Under the safety shield it looks like this:
+
+![](hardware/picoemp.jpeg)
 
 ## Background
 
@@ -66,7 +68,7 @@ You will also need an "injection tip", typically made with a ferrite core and so
 
 ![](hardware/injection_tips/examples/tips-sma.jpg)
 
-You can make your own from suitable SMA connectors, magnet wire, and a ferrite core material. See the [injection_tips](hardware/injection_tips) 
+You can make your own from suitable SMA connectors, magnet wire, and a ferrite core material. See the [injection_tips](hardware/injection_tips)
 folder for more examples and details on building the probes.
 
 *Reader Note: Please submit your own examples with a pull-request to this repo, it would be great to have more examples of probe geometries*
