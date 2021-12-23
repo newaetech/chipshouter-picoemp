@@ -134,6 +134,13 @@ at least the following for a minimal-fuss option:
 
 The SMA connector is to mate with the SMA on the output. You might want to pickup several of them.
 
+Finally you should pick up a USB isolator if you plan on communicating with this thing in operation. There
+are lots of these available, but two part numbers you can order from Digi-Key at the same time (just pick one):
+```
+Seeed Technology Co 114991949
+Adafruit 2107
+```
+
 ### Minimum Build
 
 If you run into supply chain issues, the *absolute minimum parts* needed are:
