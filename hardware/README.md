@@ -53,7 +53,7 @@ The following parts are a little generic, but you try to get the suggested ones 
 4,SM4005PL-TP,D1 D3 D4 D5
 1,KRM55TR72J474MH01K,C3
 1,CRMA2010AF20M0FKEF,R1
-1,3522300KFT,R3
+1,3522300KFT,R2
 1,BG306-02-A-2-0400-L-G,J3
 1,0732511150,J1
 ```
