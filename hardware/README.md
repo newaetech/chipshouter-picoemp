@@ -92,7 +92,7 @@ at the time. For some of our builds we used existing stock we had that fit the r
 2,10R 0603 RESISTOR,R3 R7
 1,75R 0805 RESISTOR,R4
 5,1K 0603 RESISTOR,R5 R10 R11 R12 R13
-1,2K 0603 RESISTOR,R9
+1,2K 0805 RESISTOR,R9
 1,22K 0603 RESISTOR,R6
 2,4.7uF 50V 0805 CERAMIC CAPACITOR,C1 C2
 1,100nF 0603 CERAMIC CAPACITOR,C5
@@ -110,6 +110,7 @@ NOTES:
 * C5 was a 50V cap in test builds, but anything > 16V should be fine.
 * LEDs: These are just some part numbers we used for one build, but in practice any 0603 red/green LED
   should work.
+* You can use 0603 resistors in place of 0805. All prototype builds were done with 0603 to no ill effect.
 
 ### BOM PART 4: Other Useful Parts
 
