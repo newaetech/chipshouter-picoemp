@@ -48,6 +48,7 @@ The following parts are a little generic, but you try to get the suggested ones 
 
 ```
 1,RGT16BM65DTL,Q2
+2,AO3422,Q3 Q4
 1,TL3301AF160QJ,SW3
 1,MURA160T3G,D2
 4,SM4005PL-TP,D1 D3 D4 D5
