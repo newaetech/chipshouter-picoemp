@@ -8,6 +8,8 @@ The PicoEMP is a low-cost Electromagnetic Fault Injection (EMFI) tool, designed 
 
 ![](hardware/picoemp.jpeg)
 
+You can see some details of the design in the [Intro Video](https://www.youtube.com/watch?v=nB5arJi-tVE).
+
 ## Background
 
 The [ChipSHOUTER](http://www.chipshouter.com) is a high-end Electromagnetic Fault Injection (EMFI) tool designed by Colin
@@ -89,7 +91,7 @@ The general usage of the PicoEMP is as follows:
 3. Place the probe tip overtop of the target.
 4. Press the "Pulse" button.
 
-You can see more examples of this in the video (TODO RECORD A VIDEO).
+You can see more examples of this in the [Intro Video](https://www.youtube.com/watch?v=nB5arJi-tVE).
 
 You can even use the Raspberry Pi Pico to attack a Raspberry Pi "regular"! Here's a demo hitting a RSA signature on a Raspberry Pi (the demo code taken from Colin's [Remoticon 2021 Talk](https://github.com/colinoflynn/remoticon-2021-levelup-hardware-hacking/tree/master/rpi-glitching)):
 
