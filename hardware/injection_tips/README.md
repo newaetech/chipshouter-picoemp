@@ -51,7 +51,7 @@ Ferrite-core inductors are common parts, and save you from winding your own coil
 The following was built using `PCV-0-472-03L` inductor. This ferrite has a 'hollow core', but
 still seems effective for F-I purposes:
 
-![](examples/tip-coilcraft-inductorth.jpg)
+![](examples/tip-coilcraft-inductor.jpg)
 
 
 #### Würth Elektronik
