@@ -131,16 +131,18 @@ at least the following for a minimal-fuss option:
 ```
 1,CONSMA013.062
 1,PCV-0-472-03L
+1,744710603
 ```
 
 The SMA connector is to mate with the SMA on the output. You might want to pickup several of them.
 
 Finally you should pick up a USB isolator if you plan on communicating with this thing in operation. There
-are lots of these available, but two part numbers you can order from Digi-Key at the same time (just pick one):
+are lots of these available, but one tested part number you can order from Digi-Key:
 ```
 Seeed Technology Co 114991949
-Adafruit 2107
 ```
+
+Alternatively try `Adafruit 2107`.
 
 ### Minimum Build
 
