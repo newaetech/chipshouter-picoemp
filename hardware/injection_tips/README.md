@@ -42,7 +42,32 @@ the SMA connector. For example:
 
 ## Various Examples
 
-### Custom Ferrite Core
+### Built Using Inductors
+
+Ferrite-core inductors are common parts, and save you from winding your own coils.
+
+#### Coil Craft
+
+The following was built using `PCV-0-472-03L` inductor. This ferrite has a 'hollow core', but
+still seems effective for F-I purposes:
+
+![](examples/tip-coilcraft-inductor.jpg)
+
+
+#### Würth Elektronik
+
+The following is a smaller inductor, Wurth `744710603` (available on Digi-Key):
+
+![](examples/tip-wurth-th.jpg)
+
+You need to unwind a wrapping to connect to the SMA. I'd consider trying this coil with less windings
+as well (unwrap more windings, but keep the windings as close to the 'active' end as possible).
+
+### Shapping Ferrite Core
+
+The following shows the Wurth `744710603` shaped, along with a small ferrite toroid (`35T0119-00P`):
+
+![](examples/tip-shaped-wurthcompare.jpg)
 
 The following is an example of doing something funky with a ferrite core:
 ![](examples/tip-slant.jpg)
@@ -56,14 +81,3 @@ side cutters) core. This shows that even without a wet grinder you can still hav
 wire used is AWG30 magnet wire.
 
 ![](examples/tip-largertorrid-broken.jpeg)
-
-### Built Using Inductors
-
-Ferrite-core inductors are common parts, and save you from winding your own coils.
-
-#### Coil Craft
-
-The following was built using `PCV-0-472-03L` inductor. This ferrite has a 'hollow core', but
-still seems effective for F-I purposes:
-
-![](examples/tip-coilcraft-inductor.jpg)
