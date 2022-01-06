@@ -1,0 +1,56 @@
+.program trigger
+
+; Repeatedly get one word of data from the TX FIFO, stalling when the FIFO is
+; empty. Write the least significant bit to the OUT pin group.
+
+; 1 NOP is 0.125uS
+
+entry:
+    ; First we pull the pulse duration from the FIFO
+    PULL BLOCK
+    MOV X, OSR
+
+    ; Clear interrupt
+    IRQ CLEAR 0
+
+    ; Now we wait for the trigger to go high
+    WAIT 1 PIN 0
+    ; After trigger, enable pulse
+    SET PINS, 1
+
+    ; Wait for configured pulse length
+loop:
+    JMP X-- loop
+    
+    ; Disable pulse
+    SET PINS, 0
+
+    ; Alert software that we triggered
+    IRQ SET 0
+
+
+% c-sdk {
+static inline pio_sm_config trigger_program_init(PIO pio, uint sm, uint offset, uint trigger_pin, uint pulse_pin) {
+    pio_sm_config c = trigger_program_get_default_config(offset);
+
+    // Map the state machine's SET pin group to one pin, namely the `pin`
+    // parameter to this function.
+    sm_config_set_set_pins(&c, pulse_pin, 1);
+    sm_config_set_in_pins(&c, trigger_pin);
+
+    sm_config_set_in_shift(&c, false, false, 32);
+    
+    // Set this pin's GPIO function (connect PIO to the pad)
+    pio_gpio_init(pio, trigger_pin);
+    pio_gpio_init(pio, pulse_pin);
+    // Set the pin direction to output at the PIO
+    pio_sm_set_consecutive_pindirs(pio, sm, trigger_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, pulse_pin, 1, true);
+
+    // Load our configuration, and jump to the start of the program
+    pio_sm_init(pio, sm, offset, &c);
+    // Set the state machine running
+    pio_sm_set_enabled(pio, sm, true);
+    return c;
+}
+%}
