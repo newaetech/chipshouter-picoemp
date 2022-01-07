@@ -26,9 +26,13 @@ and we completely disclaim all liability for what happens next. Please **only** 
 yourself, with total understanding of the operation and risks. It is *not* designed to be used in professional or educational environments,
 where tools are expected to meet safety certifications (ChipSHOUTER was designed for these use-cases).
 
+As an open-source project it also collects inputs from various community members, and welcomes your contributions! It also has various remixes of it, including:
+
+* TODO link to people's remixes.
+
 ## Building a PicoEMP
 
-The PicoEMP uses a Raspberry Pi Pico as the controller. You could alternatively use an Arduino or another microcontroller. You basically just need a few things:
+The PicoEMP uses a Raspberry Pi Pico as the controller, inspired by @nezza using it for the debug-n-dump tool. You could alternatively use an Arduino or another microcontroller. You basically just need a few things:
 
 1. PWM output to drive HV transformer.
 2. Pulse pin to generate a pulse.
@@ -81,6 +85,10 @@ You can find additional examples of homemade cores in research papers such as:
 * J. Balasch, D. Arumí and S. Manich, "Design and validation of a platform for electromagnetic fault injection," 2017 32nd Conference on Design of Circuits and Integrated Systems (DCIS), 2017, pp. 1-6. [Paper Link.](https://upcommons.upc.edu/bitstream/handle/2117/116688/bare_conf.pdf)
 * J. Toulemont, G. Chancel, J. M. Galliere, F. Mailly, P. Nouet and P. Maurine, "On the scaling of EMFI probes," 2021 Workshop on Fault Detection and Tolerance in Cryptography (FDTC), 2021. [Paper Link.](https://ieeexplore.ieee.org/abstract/document/9565575) [Slides Link.](https://jaif.io/2021/media/JAIF2021%20-%20Toulemont.pdf)
 * LimitedResults. "Enter the Gecko," 2021. [Blog Link](https://limitedresults.com/2021/06/enter-the-efm32-gecko/)
+
+### Useful References
+
+* TODO
 
 ## Using the PicoEMP
 
