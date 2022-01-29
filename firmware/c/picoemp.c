@@ -83,6 +83,14 @@ void picoemp_configure_pulse_output() {
     gpio_put(PIN_OUT_HVPULSE, false);
 }
 
+void picoemp_configure_pulse_external() {
+    // Configure pulse input
+    gpio_init(PIN_OUT_HVPULSE);
+    gpio_set_dir(PIN_OUT_HVPULSE, GPIO_IN);
+    // No pullups & pulldowns
+    gpio_set_pulls(PIN_OUT_HVPULSE, false, false);
+}
+
 void picoemp_init() {
     // Initialize LED GPIOs
     gpio_init(PIN_LED_HV);
