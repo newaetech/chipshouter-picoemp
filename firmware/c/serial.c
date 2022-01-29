@@ -39,6 +39,7 @@ void print_status(uint32_t status) {
     bool armed = (status >> 0) & 1;
     bool charged = (status >> 1) & 1;
     bool timeout_active = (status >> 2) & 1;
+    bool hvp_mode = (status >> 3) & 1;
     printf("Status:\n");
     if(armed) {
         printf("- Armed\n");
@@ -54,6 +55,11 @@ void print_status(uint32_t status) {
         printf("- Timeout active\n");
     } else {
         printf("- Timeout disabled\n");
+    }
+    if(hvp_mode) {
+        printf("- HVP internal\n");
+    } else {
+        printf("- HVP external\n");
     }
 }
 
@@ -130,6 +136,26 @@ bool handle_command(char *command) {
         }
         return true;
     }
+    if(strcmp(command, "internal_hvp") == 0) {
+        multicore_fifo_push_blocking(cmd_internal_hvp);
+        uint32_t result = multicore_fifo_pop_blocking();
+        if(result == return_ok) {
+            printf("Internal HVP mode active!\n");
+        } else {
+            printf("Setting up internal HVP mode failed.");
+        }
+        return true;
+    }
+    if(strcmp(command, "external_hvp") == 0) {
+        multicore_fifo_push_blocking(cmd_external_hvp);
+        uint32_t result = multicore_fifo_pop_blocking();
+        if(result == return_ok) {
+            printf("External HVP mode active!\n");
+        } else {
+            printf("Setting up external HVP mode failed.");
+        }
+        return true;
+    }
 
     if(strcmp(command, "reset") == 0) {
         watchdog_enable(1, 1);
@@ -151,6 +177,8 @@ void serial_console() {
             printf("- enable_timeout\n");
             printf("- disable_timeout\n");
             printf("- fast_trigger\n");
+            printf("- internal_hvp\n");
+            printf("- external_hvp\n");
             printf("- status\n");
             printf("- reset\n");
         }

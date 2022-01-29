@@ -17,4 +17,5 @@ void picoemp_enable_pwm();
 void picoemp_disable_pwm();
 void picoemp_pulse();
 void picoemp_configure_pulse_output();
+void picoemp_configure_pulse_external();
 void picoemp_init();

@@ -11,7 +11,9 @@
 
 static bool armed = false;
 static bool timeout_active = true;
+static bool hvp_internal = true;
 static absolute_time_t timeout_time;
+static uint offset = 0xFFFFFFFF;
 
 void arm() {
     gpio_put(PIN_LED_CHARGE_ON, true);
@@ -35,6 +37,9 @@ uint32_t get_status() {
     if(timeout_active) {
         result |= 0b100;
     }
+    if(hvp_internal) {
+        result |= 0b1000;
+    }
     return result;
 }
 
@@ -50,8 +55,10 @@ void fast_trigger() {
     // memory. This SDK function will find a location (offset) in the
     // instruction memory where there is enough space for our program. We need
     // to remember this location!
-    uint offset = pio_add_program(pio, &trigger_program);
-
+    if (offset == 0xFFFFFFFF) { // Only load the program once
+        offset = pio_add_program(pio, &trigger_program);
+    }
+    
     // Find a free state machine on our chosen PIO (erroring if there are
     // none). Configure it to run our program, and start it, using the
     // helper function we included in our .pio file.
@@ -111,7 +118,16 @@ int main() {
                     pio_sm_set_enabled(pio0, 0, false);
                     picoemp_configure_pulse_output();
                     break;
-
+                case cmd_internal_hvp:
+                    picoemp_configure_pulse_output();
+                    hvp_internal = true;
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_external_hvp:
+                    picoemp_configure_pulse_external();
+                    hvp_internal = false;
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
             }
         }
 

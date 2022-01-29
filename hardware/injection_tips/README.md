@@ -63,6 +63,13 @@ The following is a smaller inductor, Wurth `744710603` (available on Digi-Key):
 You need to unwind a wrapping to connect to the SMA. I'd consider trying this coil with less windings
 as well (unwrap more windings, but keep the windings as close to the 'active' end as possible).
 
+
+Alternatively you can also try experimenting with [radial leaded wire wound inductors](https://www.we-online.com/catalog/en/WE-TI#/articles/WE-TI-6065).
+Pictured is a modified `744779068` inductor that has the top ferrite cover and a few windings removed.
+
+![](examples/tip_WE_744779068.jpg)
+
+
 ### Shapping Ferrite Core
 
 The following shows the Wurth `744710603` shaped, along with a small ferrite toroid (`35T0119-00P`):

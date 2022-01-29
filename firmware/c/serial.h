@@ -8,6 +8,8 @@
 #define cmd_enable_timeout 4
 #define cmd_disable_timeout 5
 #define cmd_fast_trigger 6
+#define cmd_internal_hvp 7
+#define cmd_external_hvp 8
 #define return_ok 0
 #define return_failed 1
 
