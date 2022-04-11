@@ -15,6 +15,12 @@ static bool hvp_internal = true;
 static absolute_time_t timeout_time;
 static uint offset = 0xFFFFFFFF;
 
+// defaults taken from original code
+#define PULSE_TIME_DEFAULT 5
+#define PULSE_POWER_DEFAULT 0.0122
+static uint32_t pulse_time;
+static union float_union {float f; uint32_t ui32;} pulse_power;
+
 void arm() {
     gpio_put(PIN_LED_CHARGE_ON, true);
     armed = true;
@@ -73,8 +79,16 @@ int main() {
 
     picoemp_init();
 
+    // Init for reset pin (move somewhere else)
+    gpio_init(1);
+    gpio_set_dir(1, GPIO_OUT);
+    gpio_put(1, 1);
+
     // Run serial-console on second core
     multicore_launch_core1(serial_console);
+
+    pulse_time = PULSE_TIME_DEFAULT;
+    pulse_power.f = PULSE_POWER_DEFAULT;
 
     while(1) {
         gpio_put(PIN_LED_HV, gpio_get(PIN_IN_CHARGED));
@@ -93,7 +107,7 @@ int main() {
                     multicore_fifo_push_blocking(return_ok);
                     break;
                 case cmd_pulse:
-                    picoemp_pulse();
+                    picoemp_pulse(pulse_time);
                     update_timeout();
                     multicore_fifo_push_blocking(return_ok);
                     break;
@@ -128,16 +142,30 @@ int main() {
                     hvp_internal = false;
                     multicore_fifo_push_blocking(return_ok);
                     break;
+                case cmd_config_pulse_time:
+                    pulse_time = multicore_fifo_pop_blocking();
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_config_pulse_power:
+                    pulse_power.ui32 = multicore_fifo_pop_blocking();
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_toggle_gp1:
+                    gpio_xor_mask(1<<1);
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
             }
         }
 
         // Pulse
         if(gpio_get(PIN_BTN_PULSE)) {
+            // printf("[main] Button pulse!\n");
             update_timeout();
-            picoemp_pulse();
+            picoemp_pulse(pulse_time);
         }
 
         if(gpio_get(PIN_BTN_ARM)) {
+            // printf("[main] Button arm!\n");
             update_timeout();
             if(!armed) {
                 arm();
@@ -147,13 +175,15 @@ int main() {
             // YOLO debouncing
             while(gpio_get(PIN_BTN_ARM));
             sleep_ms(100);
+            // printf("[main] YOLO %sarmed!\n", armed ? "" : "dis");
         }
 
         if(!gpio_get(PIN_IN_CHARGED) && armed) {
-            picoemp_enable_pwm();
+            picoemp_enable_pwm(pulse_power.f);
         }
 
         if(timeout_active && (get_absolute_time() > timeout_time) && armed) {
+            // printf("[main] Timeout hit, disarming!\n");
             disarm();
         }
     }
