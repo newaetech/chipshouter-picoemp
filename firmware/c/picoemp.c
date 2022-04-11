@@ -5,6 +5,8 @@
 #include "hardware/clocks.h"
 #include "pico/stdlib.h"
 
+#include <stdio.h>
+
 const uint32_t PIN_LED_HV = 6;
 const uint32_t PIN_LED_STATUS = 7;
 const uint32_t PIN_BTN_PULSE = 11;
@@ -18,22 +20,33 @@ static bool pwm_enabled = false;
 
 // Code from https://www.i-programmer.info/programming/hardware/14849-the-pico-in-c-basic-pwm.html?start=2
 uint32_t pwm_set_freq_duty(uint slice_num,
-       uint chan,uint32_t f, float d)
+       uint chan, uint32_t f, float d)
 {
     uint32_t clock = clock_get_hz(clk_sys);
-    uint32_t divider16 = clock / f / 4096 + 
-                            (clock % (f * 4096) != 0);
+    uint32_t divider16 = clock / f / 4096 + (clock % (f * 4096) != 0);
+    
     if (divider16 / 16 == 0)
-    divider16 = 16;
+        divider16 = 16;
+    
     uint32_t wrap = clock * 16 / divider16 / f - 1;
-    pwm_set_clkdiv_int_frac(slice_num, divider16/16,
-                                        divider16 & 0xF);
+    
+    pwm_set_clkdiv_int_frac(slice_num, divider16/16, divider16 & 0xF);
     pwm_set_wrap(slice_num, wrap);
     pwm_set_chan_level(slice_num, chan, (int)((float)wrap * d));
+    
+    // printf("[picoemp] clock=%08x (%d)\n", clock, clock);
+    // printf("[picoemp] f=%08x (%d)\n", f, f);
+    // printf("[picoemp] d=%f\n", d);
+    // printf("[picoemp] wrap=%08x (%d)\n", wrap, wrap);
+    // printf("[picoemp] divider16=%08x (%d)\n", divider16, divider16);
+    // printf("[picoemp] slice_num=%08x (%d)\n", slice_num, slice_num);
+    // printf("[picoemp] chan=%08x (%d)\n", chan, chan);
+    // printf("[picoemp] level=%d\n", (int)((float)wrap * d));
+    
     return wrap;
 }
 
-void picoemp_enable_pwm() {
+void picoemp_enable_pwm(float duty_frac) {
     if(pwm_enabled) {
         return;
     }
@@ -51,8 +64,8 @@ void picoemp_enable_pwm() {
 
     // Init PWM, but don't start it yet
     pwm_init(slice, &config, false);
-    pwm_set_chan_level(slice, PWM_CHAN_A, 800);
-    pwm_set_freq_duty(slice, PWM_CHAN_A, 2500, 0.0122);
+    // pwm_set_chan_level(slice, PWM_CHAN_A, 800); // pretty sure this line is pointless
+    pwm_set_freq_duty(slice, PWM_CHAN_A, 2500, duty_frac);
     pwm_set_enabled(slice, true);
     pwm_enabled = true;
 }
@@ -64,9 +77,9 @@ void picoemp_disable_pwm() {
     gpio_put(PIN_OUT_HVPWM, false);
 }
 
-void picoemp_pulse() {
+void picoemp_pulse(uint32_t pulse_time) {
     gpio_put(PIN_OUT_HVPULSE, true);
-    sleep_us(5);
+    sleep_us(pulse_time);
     gpio_put(PIN_OUT_HVPULSE, false);
     sleep_ms(250);
 }
