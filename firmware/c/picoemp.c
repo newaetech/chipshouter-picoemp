@@ -34,15 +34,6 @@ uint32_t pwm_set_freq_duty(uint slice_num,
     pwm_set_wrap(slice_num, wrap);
     pwm_set_chan_level(slice_num, chan, (int)((float)wrap * d));
     
-    // printf("[picoemp] clock=%08x (%d)\n", clock, clock);
-    // printf("[picoemp] f=%08x (%d)\n", f, f);
-    // printf("[picoemp] d=%f\n", d);
-    // printf("[picoemp] wrap=%08x (%d)\n", wrap, wrap);
-    // printf("[picoemp] divider16=%08x (%d)\n", divider16, divider16);
-    // printf("[picoemp] slice_num=%08x (%d)\n", slice_num, slice_num);
-    // printf("[picoemp] chan=%08x (%d)\n", chan, chan);
-    // printf("[picoemp] level=%d\n", (int)((float)wrap * d));
-    
     return wrap;
 }
 
