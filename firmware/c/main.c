@@ -159,13 +159,11 @@ int main() {
 
         // Pulse
         if(gpio_get(PIN_BTN_PULSE)) {
-            // printf("[main] Button pulse!\n");
             update_timeout();
             picoemp_pulse(pulse_time);
         }
 
         if(gpio_get(PIN_BTN_ARM)) {
-            // printf("[main] Button arm!\n");
             update_timeout();
             if(!armed) {
                 arm();
@@ -175,7 +173,6 @@ int main() {
             // YOLO debouncing
             while(gpio_get(PIN_BTN_ARM));
             sleep_ms(100);
-            // printf("[main] YOLO %sarmed!\n", armed ? "" : "dis");
         }
 
         if(!gpio_get(PIN_IN_CHARGED) && armed) {
@@ -183,7 +180,6 @@ int main() {
         }
 
         if(timeout_active && (get_absolute_time() > timeout_time) && armed) {
-            // printf("[main] Timeout hit, disarming!\n");
             disarm();
         }
     }
