@@ -1,0 +1,74 @@
+.program trigger_basic
+.side_set 2
+
+; These bits have to be consecutive in the GPIO index too
+; bit 0 : gpio_pulse_go
+; bit 1 : gpio_trigger_out_debug
+
+.wrap_target
+                                    ; todo: enable autopull
+                                    ; actually mov from osr with autopull is undefined, 
+                                    ; so dont enable autopull
+    pull block          side 0b00
+    mov x osr           side 0b00   ; read delay into scratch x
+    pull block          side 0b00
+    mov y osr           side 0b00   ; read length into scratch y
+    irq clear 0         side 0b00   ; clear IRQ before starting
+    wait 1 PIN 0        side 0b10   ; wait for trigger input to go high (polarity=1), 
+                                    ; on the first input gpio (defined below),
+                                    ; and sideset gpio_trigger_out_debug high
+    ; nop                 side 0b10   ;      -> nop instead of wait, gpio_trigger_out_debug high
+delay_loop:
+    jmp x-- delay_loop  side 0b10   ; count down the delay
+pulse_loop:
+    jmp y-- pulse_loop  side 0b01   ; count down the pulse length
+    irq set 0           side 0b00   ; pulse stop, signal that program is finished with IRQ
+.wrap
+
+% c-sdk {
+static inline void trigger_basic_init(PIO pio, uint sm, uint offset, 
+    uint trigger_in, uint trigger_pulse_go) {
+
+    // TODO: trigger_in
+
+    pio_sm_config c = trigger_basic_program_get_default_config(offset);
+
+    // trigger_out_debug follows trigger_pulse_go sequentually
+    // void pio_sm_set_consecutive_pindirs (PIO pio,
+    //     uint sm,
+    //     uint pin_base,
+    //     uint pin_count,
+    //     bool is_out)
+    pio_sm_set_consecutive_pindirs(pio, sm, trigger_pulse_go, 2, true);
+
+    pio_sm_set_consecutive_pindirs(pio, sm, trigger_in, 1, false);
+
+    // init the GPIOs
+    pio_gpio_init(pio, trigger_in);
+    pio_gpio_init(pio, trigger_pulse_go);
+    pio_gpio_init(pio, trigger_pulse_go+1);
+
+    // configure the sideset pin count
+    // static void sm_config_set_sideset (pio_sm_config *c,
+    //     uint bit_count,
+    //     bool optional,
+    //     bool pindirs)
+    sm_config_set_sideset(&c, 2, false, false);
+    
+    // configure the sideset pins
+    // static void sm_config_set_sideset_pins (pio_sm_config *c,
+    //     uint sideset_base)
+    // trigger_out_debug follows trigger_pulse_go sequentually
+    sm_config_set_sideset_pins(&c, trigger_pulse_go);
+
+    // configure input pins
+    // static void sm_config_set_in_pins (pio_sm_config *c,
+    //    uint in_base)
+    sm_config_set_in_pins(&c, trigger_in);
+
+    // Load our configuration, and jump to the start of the program
+    pio_sm_init(pio, sm, offset, &c);
+    // Set the state machine running
+    pio_sm_set_enabled(pio, sm, true);
+}
+%}
