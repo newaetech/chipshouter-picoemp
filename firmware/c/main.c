@@ -11,7 +11,15 @@
 
 static bool armed = false;
 static bool timeout_active = true;
+static bool hvp_internal = true;
 static absolute_time_t timeout_time;
+static uint offset = 0xFFFFFFFF;
+
+// defaults taken from original code
+#define PULSE_TIME_DEFAULT 5
+#define PULSE_POWER_DEFAULT 0.0122
+static uint32_t pulse_time;
+static union float_union {float f; uint32_t ui32;} pulse_power;
 
 void arm() {
     gpio_put(PIN_LED_CHARGE_ON, true);
@@ -35,6 +43,9 @@ uint32_t get_status() {
     if(timeout_active) {
         result |= 0b100;
     }
+    if(hvp_internal) {
+        result |= 0b1000;
+    }
     return result;
 }
 
@@ -50,8 +61,10 @@ void fast_trigger() {
     // memory. This SDK function will find a location (offset) in the
     // instruction memory where there is enough space for our program. We need
     // to remember this location!
-    uint offset = pio_add_program(pio, &trigger_program);
-
+    if (offset == 0xFFFFFFFF) { // Only load the program once
+        offset = pio_add_program(pio, &trigger_program);
+    }
+    
     // Find a free state machine on our chosen PIO (erroring if there are
     // none). Configure it to run our program, and start it, using the
     // helper function we included in our .pio file.
@@ -66,8 +79,16 @@ int main() {
 
     picoemp_init();
 
+    // Init for reset pin (move somewhere else)
+    gpio_init(1);
+    gpio_set_dir(1, GPIO_OUT);
+    gpio_put(1, 1);
+
     // Run serial-console on second core
     multicore_launch_core1(serial_console);
+
+    pulse_time = PULSE_TIME_DEFAULT;
+    pulse_power.f = PULSE_POWER_DEFAULT;
 
     while(1) {
         gpio_put(PIN_LED_HV, gpio_get(PIN_IN_CHARGED));
@@ -86,7 +107,7 @@ int main() {
                     multicore_fifo_push_blocking(return_ok);
                     break;
                 case cmd_pulse:
-                    picoemp_pulse();
+                    picoemp_pulse(pulse_time);
                     update_timeout();
                     multicore_fifo_push_blocking(return_ok);
                     break;
@@ -111,14 +132,35 @@ int main() {
                     pio_sm_set_enabled(pio0, 0, false);
                     picoemp_configure_pulse_output();
                     break;
-
+                case cmd_internal_hvp:
+                    picoemp_configure_pulse_output();
+                    hvp_internal = true;
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_external_hvp:
+                    picoemp_configure_pulse_external();
+                    hvp_internal = false;
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_config_pulse_time:
+                    pulse_time = multicore_fifo_pop_blocking();
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_config_pulse_power:
+                    pulse_power.ui32 = multicore_fifo_pop_blocking();
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_toggle_gp1:
+                    gpio_xor_mask(1<<1);
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
             }
         }
 
         // Pulse
         if(gpio_get(PIN_BTN_PULSE)) {
             update_timeout();
-            picoemp_pulse();
+            picoemp_pulse(pulse_time);
         }
 
         if(gpio_get(PIN_BTN_ARM)) {
@@ -134,7 +176,7 @@ int main() {
         }
 
         if(!gpio_get(PIN_IN_CHARGED) && armed) {
-            picoemp_enable_pwm();
+            picoemp_enable_pwm(pulse_power.f);
         }
 
         if(timeout_active && (get_absolute_time() > timeout_time) && armed) {
