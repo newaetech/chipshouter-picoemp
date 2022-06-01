@@ -13,6 +13,9 @@
 #define cmd_config_pulse_time 9
 #define cmd_config_pulse_power 10
 #define cmd_toggle_gp1 11
+#define cmd_config_pulse_delay_cycles 12
+#define cmd_config_pulse_time_cycles 13
+
 #define return_ok 0
 #define return_failed 1
 

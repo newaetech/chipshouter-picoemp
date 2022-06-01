@@ -8,7 +8,7 @@ pico_sdk_init()
 
 add_executable(picoemp)
 
-pico_generate_pio_header(picoemp ${CMAKE_CURRENT_LIST_DIR}/trigger.pio)
+pico_generate_pio_header(picoemp ${CMAKE_CURRENT_LIST_DIR}/trigger_basic.pio)
 
 
 target_sources(picoemp PRIVATE

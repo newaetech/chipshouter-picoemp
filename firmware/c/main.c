@@ -7,7 +7,7 @@
 #include "picoemp.h"
 #include "serial.h"
 
-#include "trigger.pio.h"
+#include "trigger_basic.pio.h"
 
 static bool armed = false;
 static bool timeout_active = true;
@@ -16,9 +16,13 @@ static absolute_time_t timeout_time;
 static uint offset = 0xFFFFFFFF;
 
 // defaults taken from original code
-#define PULSE_TIME_DEFAULT 5
+#define PULSE_DELAY_CYCLES_DEFAULT 0
+#define PULSE_TIME_CYCLES_DEFAULT 625 // 5us in 8ns cycles
+#define PULSE_TIME_US_DEFAULT 5 // 5us
 #define PULSE_POWER_DEFAULT 0.0122
 static uint32_t pulse_time;
+static uint32_t pulse_delay_cycles;
+static uint32_t pulse_time_cycles;
 static union float_union {float f; uint32_t ui32;} pulse_power;
 
 void arm() {
@@ -62,15 +66,17 @@ void fast_trigger() {
     // instruction memory where there is enough space for our program. We need
     // to remember this location!
     if (offset == 0xFFFFFFFF) { // Only load the program once
-        offset = pio_add_program(pio, &trigger_program);
+        offset = pio_add_program(pio, &trigger_basic_program);
     }
     
     // Find a free state machine on our chosen PIO (erroring if there are
     // none). Configure it to run our program, and start it, using the
     // helper function we included in our .pio file.
     uint sm = 0;
-    trigger_program_init(pio, sm, offset, 0, PIN_OUT_HVPULSE);
-    pio_sm_put_blocking(pio, sm, 3000);
+    trigger_basic_init(pio, sm, offset, PIN_IN_TRIGGER, PIN_OUT_HVPULSE);
+    pio_sm_put_blocking(pio, sm, pulse_delay_cycles);
+    pio_sm_put_blocking(pio, sm, pulse_time_cycles);
+
 }
 
 int main() {
@@ -87,8 +93,10 @@ int main() {
     // Run serial-console on second core
     multicore_launch_core1(serial_console);
 
-    pulse_time = PULSE_TIME_DEFAULT;
+    pulse_time = PULSE_TIME_US_DEFAULT;
     pulse_power.f = PULSE_POWER_DEFAULT;
+    pulse_delay_cycles = PULSE_DELAY_CYCLES_DEFAULT;
+    pulse_time_cycles = PULSE_TIME_CYCLES_DEFAULT;
 
     while(1) {
         gpio_put(PIN_LED_HV, gpio_get(PIN_IN_CHARGED));
@@ -122,6 +130,14 @@ int main() {
                     break;
                 case cmd_disable_timeout:
                     timeout_active = false;
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_config_pulse_delay_cycles:
+                    pulse_delay_cycles = multicore_fifo_pop_blocking();
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_config_pulse_time_cycles:
+                    pulse_time_cycles = multicore_fifo_pop_blocking();
                     multicore_fifo_push_blocking(return_ok);
                     break;
                 case cmd_fast_trigger:

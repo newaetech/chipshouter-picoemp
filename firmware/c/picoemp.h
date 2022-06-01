@@ -4,6 +4,7 @@
 #include "hardware/pwm.h"
 #include "hardware/clocks.h"
 
+extern const uint32_t PIN_IN_TRIGGER;
 extern const uint32_t PIN_LED_HV;
 extern const uint32_t PIN_LED_STATUS;
 extern const uint32_t PIN_BTN_PULSE;
