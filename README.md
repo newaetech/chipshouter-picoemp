@@ -10,6 +10,14 @@ The PicoEMP is a low-cost Electromagnetic Fault Injection (EMFI) tool, designed 
 
 You can see some details of the design in the [Intro Video](https://www.youtube.com/watch?v=nB5arJi-tVE).
 
+## Thanks / Contributors
+
+PicoEMP is a community-focused project, with major contributions from:
+* Colin O'Flynn (original HW design, simple Python demo)
+* [stacksmashing](https://twitter.com/ghidraninja) (C firmware for full PIO feature-set)
+* [Lennert Wouters](https://twitter.com/LennertWo) (C improvements, first real demo)
+* [@nilswiersma](https://github.com/nilswiersma) (Triggering/C improvements)
+
 ## Background
 
 The [ChipSHOUTER](http://www.chipshouter.com) is a high-end Electromagnetic Fault Injection (EMFI) tool designed by Colin
@@ -88,7 +96,9 @@ You can find additional examples of homemade cores in research papers such as:
 
 ### Useful References
 
-* TODO
+If you don't know where to start with FI, you may find a couple chapters of the [Hardware Hacking Handbook](https://nostarch.com/hardwarehacking) useful.
+
+You can see a demo of PicoEMP being used on a real attack in this [TI CC SimpleLink attack demo](https://github.com/KULeuven-COSIC/SimpleLink-FI/blob/main/notebooks/5_ChipSHOUTER-PicoEMP.ipynb).
 
 ## Using the PicoEMP
 
