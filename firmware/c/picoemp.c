@@ -103,9 +103,7 @@ void picoemp_init() {
     gpio_set_dir(PIN_LED_HV, GPIO_OUT);
     gpio_set_dir(PIN_LED_STATUS, GPIO_OUT);
     gpio_set_dir(PIN_LED_CHARGE_ON, GPIO_OUT);
-    // Enable status LED
-    gpio_put(PIN_LED_STATUS, true);
-
+    
     // Initialize button GPIOs
     gpio_init(PIN_BTN_ARM);
     gpio_init(PIN_BTN_PULSE);
@@ -118,7 +116,6 @@ void picoemp_init() {
     gpio_set_pulls(PIN_BTN_PULSE, true, false);
     // Invert PULSE input so we can read ARM & PULSE both as active-high
     gpio_set_inover(PIN_BTN_PULSE, GPIO_OVERRIDE_INVERT);
-
 
     // Charge-detection coming from HV side
     gpio_init(PIN_IN_CHARGED);

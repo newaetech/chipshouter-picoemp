@@ -79,10 +79,23 @@ int main() {
 
     picoemp_init();
 
+    //Test LED
+    // All ON for 1s and then all OFF
+    gpio_put(PIN_LED_HV, true);
+    gpio_put(PIN_LED_STATUS, true);
+    gpio_put(PIN_LED_CHARGE_ON, true);
+    sleep_ms(1000);
+    gpio_put(PIN_LED_HV, false);
+    gpio_put(PIN_LED_STATUS, false);
+    gpio_put(PIN_LED_CHARGE_ON, false);
+    
     // Init for reset pin (move somewhere else)
     gpio_init(1);
     gpio_set_dir(1, GPIO_OUT);
     gpio_put(1, 1);
+
+    //Now initialization is really complete, we can power on STATUS
+    gpio_put(PIN_LED_STATUS, true);
 
     // Run serial-console on second core
     multicore_launch_core1(serial_console);
