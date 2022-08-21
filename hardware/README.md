@@ -72,8 +72,9 @@ NOTES:
   *WARNING*: These MOSFETs seem to be surprisingly hard to source sometimes.
 * SW3 is a 'discharge' switch and is optional, it should be 5mm high to provide clearance.
 * J3 is optional (used for calibrating charge voltage, not used normally).
-* D1 D3 D4 D5 are Schottky diodes. Suggested ones have 600V rating which is only used in case iolation
-breakdown occurs. In circuit they will be exposed to 4V max ever. Almost any diode can be sub'd OK.
+* D1 D3 D4 D5 are HV diodes for isolation. Suggested ones have 600V rating which is only used in case iolation
+breakdown occurs. In circuit they will be exposed to 4V max ever. Almost any diode can be sub'd OK. (NB: The schematic
+& old versions of this doc claimed they were Schottky diodes, but as @settinger caught this was never the case).
 * C3 is 630V rated, 0.47uF capacitor. Can sub anything in ~0.1uF to 1uF range with same voltage rating & case size
   (watch height! Must be below 5mm to fit shield).
 * R1 is 20M-ohm, 2010 size. 1% to 5% is all OK, this part isn't very specific. At least 100mW rating, ideally
