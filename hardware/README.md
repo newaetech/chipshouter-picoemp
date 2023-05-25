@@ -1,6 +1,6 @@
 # PicoEMP Build Details
 
-*This page is a work in progress, hardware source files not yet uploaded*
+*This page is a (continous) work in progress, original design files in Altium are uploaded*
 
 ## BOM
 
