@@ -67,9 +67,8 @@ Newark so you can purchase alongside everything else you need.
 
 ### Easy-Assemble Build
 
-The Easy-Assembly build uses a "mostly complete" SMD board, which you need to solder a Raspberry Pi Pico, switches, and through-hole headers.
-
-**This does not yet exist to buy! If you are interested drop a note on Issue #1**
+The Easy-Assembly build uses a "mostly complete" SMD board, which you need to solder a Raspberry Pi Pico, switches, and through-hole headers. Currently it's available only on the [NewAE Store](https://store.newae.com/chipshouter-picoemp). We're working to
+get this listed on Mouser for much cheaper worldwide shipping (the NewAE store doesn't get great rates & due to issues with Canada's postal system for international shipments quotes mostly via DHL).
 
 ### Programming the PicoEMP
 
