@@ -92,7 +92,8 @@ You can find additional examples of homemade cores in research papers such as:
 * J. Balasch, D. Arumí and S. Manich, "Design and validation of a platform for electromagnetic fault injection," 2017 32nd Conference on Design of Circuits and Integrated Systems (DCIS), 2017, pp. 1-6. [Paper Link.](https://upcommons.upc.edu/bitstream/handle/2117/116688/bare_conf.pdf)
 * J. Toulemont, G. Chancel, J. M. Galliere, F. Mailly, P. Nouet and P. Maurine, "On the scaling of EMFI probes," 2021 Workshop on Fault Detection and Tolerance in Cryptography (FDTC), 2021. [Paper Link.](https://ieeexplore.ieee.org/abstract/document/9565575) [Slides Link.](https://jaif.io/2021/media/JAIF2021%20-%20Toulemont.pdf)
 * LimitedResults. "Enter the Gecko," 2021. [Blog Link](https://limitedresults.com/2021/06/enter-the-efm32-gecko/)
-
+* C. Gaine, J-P. Nikolovski, D. Aboulkassimi, J-M. Dutertre. "New probe design for hardware characterization by ElectroMagnetic Fault Injection," EMC Europe 2022 [Paper Link.] (https://hal-cea.archives-ouvertes.fr/cea-03657852/file/article_archivesouvertes.pdf)
+* 
 ### Useful References
 
 If you don't know where to start with FI, you may find a couple chapters of the [Hardware Hacking Handbook](https://nostarch.com/hardwarehacking) useful.
