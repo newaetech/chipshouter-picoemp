@@ -13,8 +13,6 @@ It currently supports:
 
 ```
 export PICO_SDK_PATH=.. path to pico SDK ..
-mkdir build
-cd build
-cmake ..
-make
+cmake -S . -B build
+cmake --build build
 ```
