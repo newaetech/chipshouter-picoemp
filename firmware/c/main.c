@@ -10,6 +10,7 @@
 #include "trigger_basic.pio.h"
 
 static bool armed = false;
+static bool pulse = false;
 static bool timeout_active = true;
 static bool hvp_internal = true;
 static absolute_time_t timeout_time;
@@ -23,6 +24,9 @@ static uint offset = 0xFFFFFFFF;
 static uint32_t pulse_time;
 static uint32_t pulse_delay_cycles;
 static uint32_t pulse_time_cycles;
+static bool button_enabled = true;
+static int32_t button_alarm_id = 0;
+
 static union float_union {float f; uint32_t ui32;} pulse_power;
 
 void arm() {
@@ -79,6 +83,34 @@ void fast_trigger() {
 
 }
 
+// Alarm callback to re-enable buttons
+int64_t button_enable(alarm_id_t alarm_id, void *user_data) {
+    button_enabled = true;
+    return 0;
+}
+
+void button_press_callback(uint gpio, uint32_t events) {
+    if(button_enabled) {
+        button_enabled = false;
+
+        update_timeout();
+        if(gpio == PIN_BTN_PULSE) {
+            pulse = true;
+        } else if(gpio == PIN_BTN_ARM) {
+            if(!armed) {
+                arm();
+            } else {
+                disarm();
+            }
+        }
+    } else {
+        cancel_alarm(button_alarm_id);
+    }
+
+    // Add an alarm to re-enable the buttons in 80ms (aka debounce time)
+    button_alarm_id = add_alarm_in_ms(80, button_enable, NULL, false);
+}
+
 int main() {
     // Initialize USB-UART as STDIO
     stdio_init_all();
@@ -97,6 +129,10 @@ int main() {
     pulse_power.f = PULSE_POWER_DEFAULT;
     pulse_delay_cycles = PULSE_DELAY_CYCLES_DEFAULT;
     pulse_time_cycles = PULSE_TIME_CYCLES_DEFAULT;
+
+    // Set button interrupt and callback function
+    gpio_set_irq_enabled_with_callback(PIN_BTN_ARM, GPIO_IRQ_LEVEL_HIGH, true, &button_press_callback);
+    gpio_set_irq_enabled(PIN_BTN_PULSE, GPIO_IRQ_LEVEL_LOW, true);
 
     while(1) {
         gpio_put(PIN_LED_HV, gpio_get(PIN_IN_CHARGED));
@@ -174,21 +210,9 @@ int main() {
         }
 
         // Pulse
-        if(gpio_get(PIN_BTN_PULSE)) {
-            update_timeout();
+        if(pulse) {
+            pulse = false;
             picoemp_pulse(pulse_time);
-        }
-
-        if(gpio_get(PIN_BTN_ARM)) {
-            update_timeout();
-            if(!armed) {
-                arm();
-            } else {
-                disarm();
-            }
-            // YOLO debouncing
-            while(gpio_get(PIN_BTN_ARM));
-            sleep_ms(100);
         }
 
         if(!gpio_get(PIN_IN_CHARGED) && armed) {
@@ -199,6 +223,6 @@ int main() {
             disarm();
         }
     }
-    
+
     return 0;
 }
