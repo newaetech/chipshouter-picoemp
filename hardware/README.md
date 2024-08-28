@@ -60,7 +60,7 @@ The following parts are a little generic, but you try to get the suggested ones 
 ```
 
 KNOWN SUBS:
-* D2: US1J-13-F (NOT TESTED YET)
+* D2: US1J-13-F (tested by @gashtaan in [#36](https://github.com/newaetech/chipshouter-picoemp/issues/36), now used in some builds)
 * Q3/Q4: PMV37ENEAR
 * J1: 142-0701-801
 

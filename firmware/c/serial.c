@@ -230,7 +230,7 @@ bool handle_command(char *command) {
         else
             pulse_time = strtoul(serial_buffer, unused, 10);
 
-        printf(" pulse_power (current: %f, default: %f)?\n> ", pulse_power, PULSE_POWER_DEFAULT);
+        printf(" pulse_power (current: %f, default: %f)?\n> ", pulse_power.f, PULSE_POWER_DEFAULT);
         read_line();
         printf("\n");
         if (serial_buffer[0] == 0)
