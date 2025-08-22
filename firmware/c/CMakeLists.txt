@@ -23,3 +23,7 @@ pico_add_extra_outputs(picoemp)
 # enable usb output, disable uart output
 pico_enable_stdio_usb(picoemp 1)
 pico_enable_stdio_uart(picoemp 0)
+
+# Use 200MHz clock for pio, for 5ns precision in fast trigger mode
+# RP2040 is certified to run at 200MHz, see https://github.com/raspberrypi/pico-sdk/releases/tag/2.1.1
+add_definitions(-DSYS_CLK_MHZ=200)
