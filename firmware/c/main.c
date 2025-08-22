@@ -17,7 +17,7 @@ static uint offset = 0xFFFFFFFF;
 
 // defaults taken from original code
 #define PULSE_DELAY_CYCLES_DEFAULT 0
-#define PULSE_TIME_CYCLES_DEFAULT 625 // 5us in 8ns cycles
+#define PULSE_TIME_CYCLES_DEFAULT 1000 // 5us in 5ns cycles
 #define PULSE_TIME_US_DEFAULT 5 // 5us
 #define PULSE_POWER_DEFAULT 0.0122
 static uint32_t pulse_time;

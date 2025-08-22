@@ -12,7 +12,7 @@ static char serial_buffer[256];
 static char last_command[256];
 
 #define PULSE_DELAY_CYCLES_DEFAULT 0
-#define PULSE_TIME_CYCLES_DEFAULT 625 // 5us in 8ns cycles
+#define PULSE_TIME_CYCLES_DEFAULT 1000 // 5us in 5ns cycles
 #define PULSE_TIME_US_DEFAULT 5 // 5us
 #define PULSE_POWER_DEFAULT 0.0122
 static uint32_t pulse_time;
@@ -160,10 +160,10 @@ bool handle_command(char *command) {
     if(strcmp(command, "fa") == 0 || strcmp(command, "fast_trigger_configure") == 0) {
         char **unused;
         printf(" configure in cycles\n");
-        printf("  1 cycle = 8ns\n");
-        printf("  1us = 125 cycles\n");
-        printf("  1ms = 125000 cycles\n");
-        printf("  max = MAX_UINT32 = 4294967295 cycles = 34359ms\n");
+        printf("  1 cycle = 5ns\n");
+        printf("  1us = 200 cycles\n");
+        printf("  1ms = 200000 cycles\n");
+        printf("  max = MAX_UINT32 = 4294967295 cycles = 21475ms\n");
 
         printf(" pulse_delay_cycles (current: %d, default: %d)?\n> ", pulse_delay_cycles, PULSE_DELAY_CYCLES_DEFAULT);
         read_line();
