@@ -63,6 +63,8 @@ The BOM and build details are described in the [hardware](hardware) folder. If y
 1551BTRD is used), you can find a simple 3D-printable shield as well. The official shield is low-cost and available from Digikey/Mouser/
 Newark so you can purchase alongside everything else you need.
 
+A GPLv3 licensed [shield with discharge button access](https://www.printables.com/model/1659419-chipshouter-picoemp-shield) is also available.
+
 **IMPORTANT**: The plastic shield is critical for safe operation. While the output itself is isolated from the input connections, you will still **easily shock yourself** on the exposed high-voltage capacitor and circuitry. **NEVER** operate the device without the shield.
 
 ### Easy-Assemble Build
