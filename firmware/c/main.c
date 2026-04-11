@@ -9,36 +9,51 @@
 
 #include "trigger_basic.pio.h"
 
-static bool armed = false;
+typedef enum armed_state {
+    DISARMED = 0,
+    ARMED = 1,
+    REARMED = 2,
+} armed_state_t;
+
+#define BTN_DEBOUNCE_TIME_MS 50
+
+static armed_state_t armed = DISARMED;
 static bool timeout_active = true;
 static bool hvp_internal = true;
 static absolute_time_t timeout_time;
+static absolute_time_t arm_debounce_time = 0;
 static uint offset = 0xFFFFFFFF;
 
 // defaults taken from original code
 #define PULSE_DELAY_CYCLES_DEFAULT 0
 #define PULSE_TIME_CYCLES_DEFAULT 625 // 5us in 8ns cycles
 #define PULSE_TIME_US_DEFAULT 5 // 5us
-#define PULSE_POWER_DEFAULT 0.0122
+#define CHARGE_DUTY_DEFAULT 0.0122
+#define CHARGE_FREQ_DEFAULT 2500 // 2.5 kHz
 static uint32_t pulse_time;
 static uint32_t pulse_delay_cycles;
 static uint32_t pulse_time_cycles;
-static union float_union {float f; uint32_t ui32;} pulse_power;
+static union float_union {float f; uint32_t ui32;} charge_duty;
+static uint32_t charge_freq;
 
 void arm() {
     gpio_put(PIN_LED_CHARGE_ON, true);
-    armed = true;
+    if(armed == ARMED) {
+        armed = REARMED;
+    } else {
+        armed = ARMED;
+    }
 }
 
 void disarm() {
     gpio_put(PIN_LED_CHARGE_ON, false);
-    armed = false;
+    armed = DISARMED;
     picoemp_disable_pwm();
 }
 
 uint32_t get_status() {
     uint32_t result = 0;
-    if(armed) {
+    if(armed != DISARMED) {
         result |= 0b1;
     }
     if(gpio_get(PIN_IN_CHARGED)) {
@@ -68,7 +83,7 @@ void fast_trigger() {
     if (offset == 0xFFFFFFFF) { // Only load the program once
         offset = pio_add_program(pio, &trigger_basic_program);
     }
-    
+
     // Find a free state machine on our chosen PIO (erroring if there are
     // none). Configure it to run our program, and start it, using the
     // helper function we included in our .pio file.
@@ -94,9 +109,10 @@ int main() {
     multicore_launch_core1(serial_console);
 
     pulse_time = PULSE_TIME_US_DEFAULT;
-    pulse_power.f = PULSE_POWER_DEFAULT;
     pulse_delay_cycles = PULSE_DELAY_CYCLES_DEFAULT;
     pulse_time_cycles = PULSE_TIME_CYCLES_DEFAULT;
+    charge_duty.f = CHARGE_DUTY_DEFAULT;
+    charge_freq = CHARGE_FREQ_DEFAULT;
 
     while(1) {
         gpio_put(PIN_LED_HV, gpio_get(PIN_IN_CHARGED));
@@ -162,8 +178,12 @@ int main() {
                     pulse_time = multicore_fifo_pop_blocking();
                     multicore_fifo_push_blocking(return_ok);
                     break;
-                case cmd_config_pulse_power:
-                    pulse_power.ui32 = multicore_fifo_pop_blocking();
+                case cmd_config_charge_duty:
+                    charge_duty.ui32 = multicore_fifo_pop_blocking();
+                    multicore_fifo_push_blocking(return_ok);
+                    break;
+                case cmd_config_charge_freq:
+                    charge_freq = multicore_fifo_pop_blocking();
                     multicore_fifo_push_blocking(return_ok);
                     break;
                 case cmd_toggle_gp1:
@@ -177,28 +197,36 @@ int main() {
         if(gpio_get(PIN_BTN_PULSE)) {
             update_timeout();
             picoemp_pulse(pulse_time);
+            // YOLO debouncing by picoemp_pulse forced 250ms recovery
         }
 
+        // Arming
         if(gpio_get(PIN_BTN_ARM)) {
             update_timeout();
-            if(!armed) {
-                arm();
-            } else {
-                disarm();
+            if(!arm_debounce_time) {
+                arm_debounce_time = make_timeout_time_ms(BTN_DEBOUNCE_TIME_MS);
+                (armed != DISARMED ? disarm : arm)();
+            } else if(arm_debounce_time > get_absolute_time()) {
+                arm_debounce_time = make_timeout_time_ms(BTN_DEBOUNCE_TIME_MS);
             }
-            // YOLO debouncing
-            while(gpio_get(PIN_BTN_ARM));
-            sleep_ms(100);
         }
 
-        if(!gpio_get(PIN_IN_CHARGED) && armed) {
-            picoemp_enable_pwm(pulse_power.f);
+        if (arm_debounce_time && arm_debounce_time < get_absolute_time()) {
+            arm_debounce_time = 0;
         }
 
-        if(timeout_active && (get_absolute_time() > timeout_time) && armed) {
+        if(armed == ARMED && !gpio_get(PIN_IN_CHARGED)) {
+            picoemp_enable_pwm(charge_duty.f, charge_freq);
+        } else if(armed == REARMED) {
+            picoemp_disable_pwm();
+            picoemp_enable_pwm(charge_duty.f, charge_freq);
+            armed = ARMED;
+        }
+
+        if(armed != DISARMED && timeout_active && (get_absolute_time() > timeout_time)) {
             disarm();
         }
     }
-    
+
     return 0;
 }

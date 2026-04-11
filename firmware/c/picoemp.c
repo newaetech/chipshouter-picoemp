@@ -25,20 +25,20 @@ uint32_t pwm_set_freq_duty(uint slice_num,
 {
     uint32_t clock = clock_get_hz(clk_sys);
     uint32_t divider16 = clock / f / 4096 + (clock % (f * 4096) != 0);
-    
+
     if (divider16 / 16 == 0)
         divider16 = 16;
-    
+
     uint32_t wrap = clock * 16 / divider16 / f - 1;
-    
+
     pwm_set_clkdiv_int_frac(slice_num, divider16/16, divider16 & 0xF);
     pwm_set_wrap(slice_num, wrap);
     pwm_set_chan_level(slice_num, chan, (int)((float)wrap * d));
-    
+
     return wrap;
 }
 
-void picoemp_enable_pwm(float duty_frac) {
+void picoemp_enable_pwm(float duty_frac, uint32_t freq) {
     if(pwm_enabled) {
         return;
     }
@@ -46,7 +46,7 @@ void picoemp_enable_pwm(float duty_frac) {
     // Get PWM slice
     uint32_t slice = pwm_gpio_to_slice_num(PIN_OUT_HVPWM);
     gpio_set_function(PIN_OUT_HVPWM, GPIO_FUNC_PWM);
-    
+
     // Set up clock divider
     float target_frequency = 25;
     float divider = clock_get_hz(clk_sys) / target_frequency;
@@ -57,7 +57,7 @@ void picoemp_enable_pwm(float duty_frac) {
     // Init PWM, but don't start it yet
     pwm_init(slice, &config, false);
     // pwm_set_chan_level(slice, PWM_CHAN_A, 800); // pretty sure this line is pointless
-    pwm_set_freq_duty(slice, PWM_CHAN_A, 2500, duty_frac);
+    pwm_set_freq_duty(slice, PWM_CHAN_A, freq, duty_frac);
     pwm_set_enabled(slice, true);
     pwm_enabled = true;
 }
@@ -73,6 +73,7 @@ void picoemp_pulse(uint32_t pulse_time) {
     gpio_put(PIN_OUT_HVPULSE, true);
     sleep_us(pulse_time);
     gpio_put(PIN_OUT_HVPULSE, false);
+    // force 250ms recovery time
     sleep_ms(250);
 }
 

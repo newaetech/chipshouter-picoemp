@@ -11,10 +11,11 @@
 #define cmd_internal_hvp 7
 #define cmd_external_hvp 8
 #define cmd_config_pulse_time 9
-#define cmd_config_pulse_power 10
+#define cmd_config_charge_duty 10
 #define cmd_toggle_gp1 11
 #define cmd_config_pulse_delay_cycles 12
 #define cmd_config_pulse_time_cycles 13
+#define cmd_config_charge_freq 14
 
 #define return_ok 0
 #define return_failed 1

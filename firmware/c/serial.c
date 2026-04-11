@@ -14,11 +14,13 @@ static char last_command[256];
 #define PULSE_DELAY_CYCLES_DEFAULT 0
 #define PULSE_TIME_CYCLES_DEFAULT 625 // 5us in 8ns cycles
 #define PULSE_TIME_US_DEFAULT 5 // 5us
-#define PULSE_POWER_DEFAULT 0.0122
+#define CHARGE_DUTY_DEFAULT 0.0122
+#define CHARGE_FREQ_DEFAULT 2500 // 2.5 kHz
 static uint32_t pulse_time;
 static uint32_t pulse_delay_cycles;
 static uint32_t pulse_time_cycles;
-static union float_union {float f; uint32_t ui32;} pulse_power;
+static union float_union {float f; uint32_t ui32;} charge_duty;
+static uint32_t charge_freq;
 
 void read_line() {
     memset(serial_buffer, 0, sizeof(serial_buffer));
@@ -153,7 +155,7 @@ bool handle_command(char *command) {
             multicore_fifo_pop_blocking();
             printf("Triggered!\n");
         } else {
-            printf("Setting up fast trigger failed.");
+            printf("Setting up fast trigger failed.\n");
         }
         return true;
     }
@@ -172,7 +174,7 @@ bool handle_command(char *command) {
             printf("Using default\n");
         else
             pulse_delay_cycles = strtoul(serial_buffer, unused, 10);
-        
+
         printf(" pulse_time_cycles (current: %d, default: %d)?\n> ", pulse_time_cycles, PULSE_TIME_CYCLES_DEFAULT);
         read_line();
         printf("\n");
@@ -185,14 +187,14 @@ bool handle_command(char *command) {
         multicore_fifo_push_blocking(pulse_delay_cycles);
         uint32_t result = multicore_fifo_pop_blocking();
         if(result != return_ok) {
-            printf("Config pulse_delay_cycles failed.");
+            printf("Config pulse_delay_cycles failed.\n");
         }
 
         multicore_fifo_push_blocking(cmd_config_pulse_time_cycles);
         multicore_fifo_push_blocking(pulse_time_cycles);
         result = multicore_fifo_pop_blocking();
         if(result != return_ok) {
-            printf("Config pulse_time_cycles failed.");
+            printf("Config pulse_time_cycles failed.\n");
         }
 
         printf("pulse_delay_cycles=%d, pulse_time_cycles=%d\n", pulse_delay_cycles, pulse_time_cycles);
@@ -205,7 +207,7 @@ bool handle_command(char *command) {
         if(result == return_ok) {
             printf("Internal HVP mode active!\n");
         } else {
-            printf("Setting up internal HVP mode failed.");
+            printf("Setting up internal HVP mode failed.\n");
         }
         return true;
     }
@@ -215,7 +217,7 @@ bool handle_command(char *command) {
         if(result == return_ok) {
             printf("External HVP mode active!\n");
         } else {
-            printf("Setting up external HVP mode failed.");
+            printf("Setting up external HVP mode failed.\n");
         }
         return true;
     }
@@ -230,39 +232,54 @@ bool handle_command(char *command) {
         else
             pulse_time = strtoul(serial_buffer, unused, 10);
 
-        printf(" pulse_power (current: %f, default: %f)?\n> ", pulse_power.f, PULSE_POWER_DEFAULT);
+        printf(" charge_duty (current: %f, default: %f)?\n> ", charge_duty.f, CHARGE_DUTY_DEFAULT);
         read_line();
         printf("\n");
         if (serial_buffer[0] == 0)
-            printf("Using default");
+            printf("Using default\n");
         else
-            pulse_power.f = strtof(serial_buffer, unused);
+            charge_duty.f = strtof(serial_buffer, unused);
+
+        printf(" charge_freq (current: %d, default: %d)?\n> ", charge_freq, CHARGE_FREQ_DEFAULT);
+        read_line();
+        printf("\n");
+        if (serial_buffer[0] == 0)
+            printf("Using default\n");
+        else
+            charge_freq = strtoul(serial_buffer, unused, 10);
 
         multicore_fifo_push_blocking(cmd_config_pulse_time);
         multicore_fifo_push_blocking(pulse_time);
         uint32_t result = multicore_fifo_pop_blocking();
         if(result != return_ok) {
-            printf("Config pulse_time failed.");
+            printf("Config pulse_time failed.\n");
         }
 
-        multicore_fifo_push_blocking(cmd_config_pulse_power);
-        multicore_fifo_push_blocking(pulse_power.ui32);
+        multicore_fifo_push_blocking(cmd_config_charge_duty);
+        multicore_fifo_push_blocking(charge_duty.ui32);
         result = multicore_fifo_pop_blocking();
         if(result != return_ok) {
-            printf("Config pulse_power failed.");
+            printf("Config charge_duty failed.\n");
         }
 
-        printf("pulse_time=%d, pulse_power=%f\n", pulse_time, pulse_power.f);
+        multicore_fifo_push_blocking(cmd_config_charge_freq);
+        multicore_fifo_push_blocking(charge_freq);
+        result = multicore_fifo_pop_blocking();
+        if(result != return_ok) {
+            printf("Config charge_freq failed.");
+        }
+
+        printf("pulse_time=%d, charge_duty=%f, charge_freq=%d\n", pulse_time, charge_duty.f, charge_freq);
 
         return true;
     }
 
     if(strcmp(command, "t") == 0 || strcmp(command, "toggle_gp1") == 0) {
         multicore_fifo_push_blocking(cmd_toggle_gp1);
-        
+
         uint32_t result = multicore_fifo_pop_blocking();
         if(result != return_ok) {
-            printf("target_reset failed.");
+            printf("target_reset failed.\n");
         }
 
         return true;
@@ -282,9 +299,10 @@ void serial_console() {
     memset(last_command, 0, sizeof(last_command));
 
     pulse_time = PULSE_TIME_US_DEFAULT;
-    pulse_power.f = PULSE_POWER_DEFAULT;
     pulse_delay_cycles = PULSE_DELAY_CYCLES_DEFAULT;
     pulse_time_cycles = PULSE_TIME_CYCLES_DEFAULT;
+    charge_duty.f = CHARGE_DUTY_DEFAULT;
+    charge_freq = CHARGE_FREQ_DEFAULT;
     
     while(1) {
         read_line();
@@ -302,13 +320,13 @@ void serial_console() {
             printf("- [fa]st_trigger_configure: delay_cycles=%d, time_cycles=%d\n", pulse_delay_cycles, pulse_time_cycles);
             printf("- [in]ternal_hvp\n");
             printf("- [ex]ternal_hvp\n");
-            printf("- [c]onfigure: pulse_time=%d, pulse_power=%f\n", pulse_time, pulse_power.f);
+            printf("- [c]onfigure: pulse_time=%d, charge_duty=%f, charge_freq=%d\n", pulse_time, charge_duty.f, charge_freq);
             printf("- [t]oggle_gp1\n");
             printf("- [s]tatus\n");
             printf("- [r]eset\n");
         }
         printf("\n");
-        
+
         if (last_command[0] != 0) {
             printf("[%s] > ", last_command);
         } else {
